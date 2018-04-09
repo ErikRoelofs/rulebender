@@ -28,6 +28,7 @@ function love.load()
       counter = counter + 1
     end)
   triggerA:respondTo(blockA)
+  triggerA:stopRespondingTo(blockA)
   
 end
 

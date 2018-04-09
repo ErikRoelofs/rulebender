@@ -5,15 +5,22 @@ return function(dispatcher, effect)
   }
   dispatcher:listen("inputblock.pulse", function(event)
     for _, innerBlock in ipairs(block.respondsTo) do
-      print(innerBlock)
       if innerBlock == event.value then
         block.effect()
       end
     end
   end)
   block.respondTo = function(self, inputblock)
-    print(inputblock)
-    table.insert(block.respondsTo, inputblock)
+    table.insert(self.respondsTo, inputblock)
   end
+  
+  block.stopRespondingTo = function(self, inputblock)
+    for key, innerblock in ipairs(self.respondsTo) do
+      if innerblock == inputblock then
+        table.remove(self.respondsTo, key)
+      end
+    end
+  end
+  
   return block
 end
