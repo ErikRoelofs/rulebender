@@ -42,16 +42,31 @@ return function (dispatcher, width, height)
   
   room.moveObject = function (self, object, direction)
     local x,y = self:_findObjectLocation(object)
-    room:removeObject(object)
+    
     if direction == "right" then
+      if not self:canMoveTo(x + 1, y, object) then return end
+      room:removeObject(object)
       room:placeObject(x + 1, y, object)
     elseif direction == "left" then
+      if not self:canMoveTo(x - 1, y, object) then return end
+      room:removeObject(object)
       room:placeObject(x - 1, y, object)
     elseif direction == "up" then
+      if not self:canMoveTo(x, y + 1, object) then return end
+      room:removeObject(object)
       room:placeObject(x, y + 1, object)
     elseif direction == "down" then
+      if not self:canMoveTo(x, y - 1, object) then return end
+      room:removeObject(object)
       room:placeObject(x, y - 1, object)
     end
+  end
+  
+  room.canMoveTo = function(self, x, y, object)
+    if x < 0 or x >= self.width or y < 0 or y >= self.height then
+      return false
+    end
+    return self.tiles[x][y]:canAddObject(object)
   end
   
   room.dispatchToAdjacentSquares = function(self, x, y, object, name)

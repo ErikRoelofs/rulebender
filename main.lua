@@ -37,10 +37,13 @@ function love.load()
   room = require("room")(dispatcher, 4,8)
   local bot = require("bot")(dispatcher, room)
   
+  local wall = require("wall")()
+  
   room:placeObject(3, 3, blockA)
   room:placeObject(1, 1, blockB)
   room:placeObject(3, 2, triggerA)
   room:placeObject(3, 7, bot)
+  room:placeObject(0, 7, wall)
   
 end
 

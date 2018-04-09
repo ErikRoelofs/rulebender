@@ -1,6 +1,6 @@
 return function(dispatcher, room)
   local bot = {
-    
+    state = "solid"
   }
   bot.left = function()
     room:moveObject(bot, "left")

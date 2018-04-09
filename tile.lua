@@ -4,7 +4,17 @@ return function(dispatcher)
     dispatcher = dispatcher
   }
   
+  tile.canAddObject = function(self, object)
+    for _, obj in ipairs(self.content) do
+      if obj.state == "impassable" then
+        return false
+      end
+    end
+    return true
+  end
+  
   tile.addObject = function(self, object)
+    if not self:canAddObject(object) then return end
     table.insert(self.content, object)
   end
   

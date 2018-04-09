@@ -1,7 +1,8 @@
 return function(dispatcher, effect)
   local block = {
     effect = effect,
-    respondsTo = {}
+    respondsTo = {},
+    state = "solid"
   }
   dispatcher:listen("inputblock.pulse", function(event)
     for _, innerBlock in ipairs(block.respondsTo) do

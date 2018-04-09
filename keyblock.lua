@@ -1,6 +1,7 @@
 return function(dispatcher, key)
   local inputblock = {
-    key = key
+    key = key,
+    state = "solid"
   }
   dispatcher:listen("keypressed", function(event)
     if event.key == inputblock.key then
