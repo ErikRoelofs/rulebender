@@ -1,4 +1,7 @@
 return function (dispatcher, width, height) 
+  
+  local tileFactory = require("tile")
+  
   local room = {
     width = width,
     height = height,
@@ -12,7 +15,7 @@ return function (dispatcher, width, height)
     room.tiles[i] = {}
     j = 0
     while j < height do
-      room.tiles[i][j] = {}
+      room.tiles[i][j] = tileFactory(dispatcher)
       j = j + 1
     end
     i = i + 1
@@ -21,31 +24,24 @@ return function (dispatcher, width, height)
   room.placeObject = function(self, x, y, object)
     assert( x < self.width and y < self.height and x >= 0 and y >= 0, "Cannot place object; out of bounds." )
     
-    table.insert(self.tiles[x][y], object)
+    self.tiles[x][y]:addObject(object)
     self.objects[object] = {x = x, y = y}
     
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
   end
   
-  room.findObjectLocation = function(self, object)
+  room._findObjectLocation = function(self, object)
     return self.objects[object].x, self.objects[object].y
   end
   
   room.removeObject = function(self, object)
-    local x = self.objects[object].x
-    local y = self.objects[object].y
-    
-    for key, obj in ipairs(self.tiles[x][y]) do
-      if obj == object then
-        table.remove(self.tiles[x][y], key)
-      end
-    end
-    
+    local x, y = self:_findObjectLocation(object)
+    self.tiles[x][y]:removeObject(object)
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNoLongerAdjacent")
   end
   
   room.moveObject = function (self, object, direction)
-    local x,y = self:findObjectLocation(object)
+    local x,y = self:_findObjectLocation(object)
     room:removeObject(object)
     if direction == "right" then
       room:placeObject(x + 1, y, object)
@@ -67,7 +63,7 @@ return function (dispatcher, width, height)
   
   room.dispatchAdjacencyEvent = function(self, x, y, adjacentObject, eventName, direction)
     if x < 0 or x >= self.width or y < 0 or y >= self.height then return end
-    for _, object in ipairs(self.tiles[x][y]) do
+    for _, object in ipairs(self.tiles[x][y]:getContents()) do
       local event = {
         name = eventName,
         objectA = object,
@@ -82,13 +78,10 @@ return function (dispatcher, width, height)
     while i < self.width do
       j = 0
       while j < self.height do
-        --love.graphics.print(i .. ", " .. j, i * 50, j * 50 )
         love.graphics.rectangle("line", i * 50, j * 50, 50, 50)
         love.graphics.push()
         love.graphics.translate(i * 50, j * 50)
-        for _, obj in ipairs(self.tiles[i][j]) do
-          obj:draw()
-        end
+        self.tiles[i][j]:draw()
         love.graphics.pop()
         j = j + 1
       end
