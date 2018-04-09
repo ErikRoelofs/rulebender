@@ -11,6 +11,10 @@ return function(dispatcher, key)
       dispatcher:dispatch(newEvent)
     end
   end)
+  
+  inputblock.draw = function(self)
+    love.graphics.print("input", 0, 20)
+  end
 
   return inputblock
 end

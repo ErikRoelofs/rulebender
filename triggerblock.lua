@@ -41,5 +41,9 @@ return function(dispatcher, effect)
     end
   end
   
+  block.draw = function(self)
+    love.graphics.print("trigger", 0, 20)
+  end
+  
   return block
 end

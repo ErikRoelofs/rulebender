@@ -26,15 +26,21 @@ function love.load()
   counter = 0
   local triggerA = triggerblockFactory(dispatcher, function()
       counter = counter + 1
+      local event = {
+        name = "bot.left"
+      }
+      dispatcher:dispatch(event)
     end)
   triggerA:respondTo(blockA)
   triggerA:stopRespondingTo(blockA)
   
   room = require("room")(dispatcher, 4,8)
+  local bot = require("bot")(dispatcher, room)
   
   room:placeObject(3, 3, blockA)
   room:placeObject(1, 1, blockB)
   room:placeObject(3, 2, triggerA)
+  room:placeObject(3, 7, bot)
   
 end
 
@@ -43,7 +49,8 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.print(counter, 100, 100)
+  love.graphics.print(counter, 300, 10)
+  room:draw()
 end
 
 function love.keypressed(key)
