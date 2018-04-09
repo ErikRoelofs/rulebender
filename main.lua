@@ -30,6 +30,12 @@ function love.load()
   triggerA:respondTo(blockA)
   triggerA:stopRespondingTo(blockA)
   
+  room = require("room")(dispatcher, 4,8)
+  
+  room:placeObject(3, 3, blockA)
+  room:placeObject(1, 1, blockB)
+  room:placeObject(3, 2, triggerA)
+  
 end
 
 function love.update(dt)

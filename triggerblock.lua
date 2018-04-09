@@ -10,6 +10,25 @@ return function(dispatcher, effect)
       end
     end
   end)
+  dispatcher:listen("room.objectsNowAdjacent", function(event)
+    if event.objectA == block then
+      block:respondTo(event.objectB)
+    end
+    if event.objectB == block then
+      block:respondTo(event.objectA)
+    end
+  end)
+  
+  dispatcher:listen("room.objectsNoLongerAdjacent", function(event)
+    if event.objectA == block then
+      block:stopRespondingTo(event.objectB)
+    end
+    if event.objectB == block then
+      block:stopRespondingTo(event.objectA)
+    end
+  end)
+
+  
   block.respondTo = function(self, inputblock)
     table.insert(self.respondsTo, inputblock)
   end
