@@ -13,6 +13,14 @@ return function(dispatcher)
     return true
   end
   
+  tile.findBlockingObject = function(self, object)
+    for _, obj in ipairs(self.content) do
+      if obj.state == "impassable" then
+        return obj
+      end
+    end 
+  end
+  
   tile.addObject = function(self, object)
     if not self:canAddObject(object) then return end
     table.insert(self.content, object)

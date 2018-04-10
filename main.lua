@@ -18,6 +18,8 @@ function love.load()
     print(event.value.key)
   end)
 
+  eventLog = require("eventlog")(dispatcher)
+
   keyblockFactory = require("keyblock")
   local blockA = keyblockFactory(dispatcher, "a")
   local blockB = keyblockFactory(dispatcher, "b")
@@ -54,6 +56,11 @@ end
 function love.draw()
   love.graphics.print(counter, 300, 10)
   room:draw()
+  
+  love.graphics.push()
+  love.graphics.translate(500,0)
+  eventLog:draw()
+  love.graphics.pop()
 end
 
 function love.keypressed(key)

@@ -44,22 +44,35 @@ return function (dispatcher, width, height)
     local x,y = self:_findObjectLocation(object)
     
     if direction == "right" then
-      if not self:canMoveTo(x + 1, y, object) then return end
-      room:removeObject(object)
-      room:placeObject(x + 1, y, object)
+      self:tryMoveTo(x+1,y,object)
     elseif direction == "left" then
-      if not self:canMoveTo(x - 1, y, object) then return end
-      room:removeObject(object)
-      room:placeObject(x - 1, y, object)
+      self:tryMoveTo(x-1,y,object)
     elseif direction == "up" then
-      if not self:canMoveTo(x, y + 1, object) then return end
-      room:removeObject(object)
-      room:placeObject(x, y + 1, object)
+      self:tryMoveTo(x,y+1,object)
     elseif direction == "down" then
-      if not self:canMoveTo(x, y - 1, object) then return end
-      room:removeObject(object)
-      room:placeObject(x, y - 1, object)
+      self:tryMoveTo(x,y-1,object)
     end
+  end
+  
+  room.tryMoveTo = function(self, x, y, object)
+      if self:canMoveTo(x, y, object) then
+        self:removeObject(object)
+        self:placeObject(x, y, object)
+      else
+        local blocking = self:getBlockingObject(x, y, object)
+        if blocking then
+          local event = {
+            name = "room.objectsCollided",
+            objectA = object,
+            objectB = blocking
+          }
+          self.dispatcher:dispatch(event)
+        end
+      end
+  end
+  
+  room.getBlockingObject = function(self, x, y, object)
+    return self.tiles[x][y]:findBlockingObject(object)
   end
   
   room.canMoveTo = function(self, x, y, object)
