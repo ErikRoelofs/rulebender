@@ -48,9 +48,9 @@ return function (dispatcher, width, height)
     elseif direction == "left" then
       self:tryMoveTo(x-1,y,object)
     elseif direction == "up" then
-      self:tryMoveTo(x,y+1,object)
-    elseif direction == "down" then
       self:tryMoveTo(x,y-1,object)
+    elseif direction == "down" then
+      self:tryMoveTo(x,y+1,object)
     end
   end
   
@@ -72,6 +72,9 @@ return function (dispatcher, width, height)
   end
   
   room.getBlockingObject = function(self, x, y, object)
+    if x < 0 or x >= self.width or y < 0 or y >= self.height then
+      return nil
+    end
     return self.tiles[x][y]:findBlockingObject(object)
   end
   
