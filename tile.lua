@@ -13,6 +13,27 @@ return function(dispatcher)
     return true
   end
   
+  tile.canAddMovingObject = function(self, object, direction)
+    for _, obj in ipairs(self.content) do
+      if obj.state == "solid" then
+        local event = {
+          name = "object.pushed",
+          object = obj,
+          direction = direction
+        }
+        self.dispatcher:dispatch(event)
+      end
+    end
+    
+    for _, obj in ipairs(self.content) do
+      if obj.state == "impassable" or obj.state == "solid" then
+        return false
+      end
+    end
+    
+    return true
+  end
+
   tile.findBlockingObject = function(self, object)
     for _, obj in ipairs(self.content) do
       if obj.state == "impassable" then

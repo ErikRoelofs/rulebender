@@ -12,7 +12,18 @@ return function(dispatcher, key)
       dispatcher:dispatch(newEvent)
     end
   end)
-  
+    
+  dispatcher:listen("object.pushed", function(event)
+    if event.object == inputblock then
+      local newEvent = {
+        name = "move",
+        direction = event.direction,
+        object = inputblock
+      }
+      dispatcher:dispatch(newEvent)
+    end
+  end)
+
   inputblock.draw = function(self)
     love.graphics.print("input", 0, 20)
   end

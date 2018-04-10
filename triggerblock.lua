@@ -29,6 +29,17 @@ return function(dispatcher, effect)
     end
   end)
 
+  dispatcher:listen("object.pushed", function(event)
+    if event.object == block then
+      local newEvent = {
+        name = "move",
+        direction = event.direction,
+        object = block
+      }
+      dispatcher:dispatch(newEvent)
+    end
+  end)
+
   
   block.respondTo = function(self, inputblock)
     table.insert(self.respondsTo, inputblock)
