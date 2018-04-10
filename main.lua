@@ -39,7 +39,7 @@ function love.load()
   directionblocks = require("directionblocks")(dispatcher, triggerblockFactory)
   
   room = require("room")(dispatcher, 4,8)
-  local bot = require("bot")(dispatcher, room)
+  local bot = require("bot")(dispatcher)
   
   local wall = require("wall")()
   

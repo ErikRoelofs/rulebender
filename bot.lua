@@ -1,24 +1,45 @@
-return function(dispatcher, room)
+return function(dispatcher)
   local bot = {
     state = "solid"
   }
   bot.left = function()
-    room:moveObject(bot, "left")
+    local event = {
+      name = "move",
+      object = bot,
+      direction = "left"
+    }
+    dispatcher:dispatch(event)
   end
   dispatcher:listen("bot.left", bot.left)
   
   bot.right = function()
-    room:moveObject(bot, "right")
+    local event = {
+      name = "move",
+      object = bot,
+      direction = "right"
+    }
+    dispatcher:dispatch(event)
   end
   dispatcher:listen("bot.right", bot.right)
 
   bot.up = function()
-    room:moveObject(bot, "up")
+    local event = {
+      name = "move",
+      object = bot,
+      direction = "up"
+    }
+    dispatcher:dispatch(event)
+
   end
   dispatcher:listen("bot.up", bot.up)
 
   bot.down = function()
-    room:moveObject(bot, "down")
+    local event = {
+      name = "move",
+      object = bot,
+      direction = "down"
+    }
+    dispatcher:dispatch(event)
   end
   dispatcher:listen("bot.down", bot.down)
 
