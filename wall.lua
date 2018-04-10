@@ -1,6 +1,6 @@
 return function()
   local wall = {
-    state = "impassable"
+    state = "solid"
   }
   
   wall.draw = function(self)

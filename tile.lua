@@ -6,7 +6,7 @@ return function(dispatcher)
   
   tile.canAddObject = function(self, object)
     for _, obj in ipairs(self.content) do
-      if obj.state == "impassable" then
+      if obj.state == "solid" then
         return false
       end
     end
@@ -26,7 +26,7 @@ return function(dispatcher)
     end
     
     for _, obj in ipairs(self.content) do
-      if obj.state == "impassable" or obj.state == "solid" then
+      if obj.state == "solid" then
         return false
       end
     end

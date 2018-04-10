@@ -56,7 +56,7 @@ function love.load()
   room:placeObject(0, 1, directionblocks.down)
 
   room:placeObject(3, 7, bot)
-  room:placeObject(0, 7, wall)
+  room:placeObject(0, 6, wall)
   
 end
 
