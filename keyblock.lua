@@ -1,8 +1,11 @@
-return function(dispatcher, key)
-  local inputblock = {
-    key = key,
-    state = "solid"
-  }
+return function(objectFactory, dispatcher, key)
+  local inputblock = objectFactory()
+    :thatIsSolid()
+    :thatCanBePushed()
+    :thatCanBeDrawn(function(self) love.graphics.print("input", 0, 20) end)
+    :go()
+  
+  inputblock.key = key
   dispatcher:listen("keypressed", function(event)
     if event.key == inputblock.key then
       newEvent = {
@@ -12,21 +15,6 @@ return function(dispatcher, key)
       dispatcher:dispatch(newEvent)
     end
   end)
-    
-  dispatcher:listen("object.pushed", function(event)
-    if event.object == inputblock then
-      local newEvent = {
-        name = "move",
-        direction = event.direction,
-        object = inputblock
-      }
-      dispatcher:dispatch(newEvent)
-    end
-  end)
-
-  inputblock.draw = function(self)
-    love.graphics.print("input", 0, 20)
-  end
-
+  
   return inputblock
 end

@@ -1,9 +1,14 @@
-return function(dispatcher, effect)
-  local block = {
-    effect = effect,
-    respondsTo = {},
-    state = "solid"
-  }
+return function(objectFactory, dispatcher, effect)
+    
+  local block = objectFactory()
+    :thatIsSolid()
+    :thatCanBePushed()
+    :thatCanBeDrawn(function(self) love.graphics.print("trigger", 0, 20) end)
+    :go()
+
+  block.effect = effect
+  block.respondsTo = {},
+
   dispatcher:listen("inputblock.pulse", function(event)
     for _, innerBlock in ipairs(block.respondsTo) do
       if innerBlock == event.value then
@@ -11,6 +16,7 @@ return function(dispatcher, effect)
       end
     end
   end)
+  
   dispatcher:listen("room.objectsNowAdjacent", function(event)
     if event.objectA == block then
       block:respondTo(event.objectB)
@@ -28,18 +34,6 @@ return function(dispatcher, effect)
       block:stopRespondingTo(event.objectA)
     end
   end)
-
-  dispatcher:listen("object.pushed", function(event)
-    if event.object == block then
-      local newEvent = {
-        name = "move",
-        direction = event.direction,
-        object = block
-      }
-      dispatcher:dispatch(newEvent)
-    end
-  end)
-
   
   block.respondTo = function(self, inputblock)
     table.insert(self.respondsTo, inputblock)
@@ -51,10 +45,6 @@ return function(dispatcher, effect)
         table.remove(self.respondsTo, key)
       end
     end
-  end
-  
-  block.draw = function(self)
-    love.graphics.print("trigger", 0, 20)
   end
   
   return block
