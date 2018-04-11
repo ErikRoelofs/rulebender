@@ -52,7 +52,7 @@ return function(dispatcher)
   tile.addMovingObject = function(self, object, direction, speed)
     if not self:canAddObject(object) then return end
     table.insert(self.content, object)
-    self.movingObjects[object] = {time = 1 / speed, direction = direction}
+    self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction}
   end
 
   tile.removeObject = function(self, object)
@@ -65,10 +65,24 @@ return function(dispatcher)
   
   tile.draw = function(self)
     for _, obj in ipairs(self.content) do
-      obj:draw()
+      love.graphics.push()
       if self.movingObjects[obj] then
-        love.graphics.print(self.movingObjects[obj].time, 0, 0)
+        self.translateForMovement(self.movingObjects[obj].time, self.movingObjects[obj].maxTime, self.movingObjects[obj].direction)
       end
+      obj:draw()
+      love.graphics.pop()      
+    end
+  end
+  
+  tile.translateForMovement = function(time, maxTime, direction)
+    if direction == "right" then
+      love.graphics.translate(-50 * (time/maxTime), 0)
+    elseif direction == "left" then
+      love.graphics.translate(50 * (time/maxTime), 0)
+    elseif direction == "up" then
+      love.graphics.translate(0, 50 * (time/maxTime))
+    elseif direction == "down" then
+      love.graphics.translate(0, -50 * (time/maxTime))
     end
   end
   
