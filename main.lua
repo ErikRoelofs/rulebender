@@ -15,6 +15,35 @@
 
 ]]
 
+--[[
+  inputs:
+    - key
+    - collision
+    - time
+    - fromTrigger?
+    - motion
+    - destruction
+    
+  triggers:
+    - object movement
+    - damage/death
+    - pushing
+    - open/close
+    - win
+    - on/off
+    - shoot/attack
+    - grab/drop
+    - rotate
+    - manipulate state
+    
+  combined:
+    - counters
+    - delays
+    - signal pass-through
+    - signal teleport
+
+]]
+
 function love.load()
   dispatcher = require("dispatcher")
   objectFactory = require("object")(dispatcher)
@@ -25,6 +54,8 @@ function love.load()
   local blockRight = keyblockFactory(objectFactory, "d")
   local blockUp = keyblockFactory(objectFactory, "w")
   local blockDown = keyblockFactory(objectFactory, "s")
+  
+  collisionblock = require("collisionblock")(objectFactory)
   
   pulserFactory = require("pulser")
   local pulserBlock = pulserFactory(objectFactory, 1.5)
@@ -38,7 +69,8 @@ function love.load()
   local wall = require("wall")(objectFactory)
   
   --room:placeObject(3, 3, blockLeft)
-  room:placeObject(3, 3, pulserBlock)
+  --room:placeObject(3, 3, pulserBlock)
+  room:placeObject(3, 3, collisionblock)
   room:placeObject(3, 2, directionblocks.left)
   
   room:placeObject(1, 2, blockRight)
