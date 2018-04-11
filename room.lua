@@ -30,13 +30,22 @@ return function (dispatcher, width, height)
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
   end
   
+  room.placeMovingObject = function(self, x, y, object, direction, speed)
+    assert( x < self.width and y < self.height and x >= 0 and y >= 0, "Cannot place object; out of bounds." )
+    
+    self.tiles[x][y]:addMovingObject(object, direction, speed)
+    self.objects[object] = {x = x, y = y}
+    
+    self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
+  end
+
   room._findObjectLocation = function(self, object)
     return self.objects[object].x, self.objects[object].y
   end
   
   dispatcher:listen("move", function(event)
     if room.objects[event.object] then
-      room:moveObject(event.object, event.direction)
+      room:moveObject(event.object, event.direction, event.speed)
     end
   end)
   
@@ -46,24 +55,24 @@ return function (dispatcher, width, height)
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNoLongerAdjacent")
   end
   
-  room.moveObject = function (self, object, direction)
+  room.moveObject = function (self, object, direction, speed)
     local x,y = self:_findObjectLocation(object)
     
     if direction == "right" then
-      self:tryMoveTo(x+1,y,object, direction)
+      self:tryMoveTo(x+1,y,object, direction, speed)
     elseif direction == "left" then
-      self:tryMoveTo(x-1,y,object, direction)
+      self:tryMoveTo(x-1,y,object, direction, speed)
     elseif direction == "up" then
-      self:tryMoveTo(x,y-1,object, direction)
+      self:tryMoveTo(x,y-1,object, direction, speed)
     elseif direction == "down" then
-      self:tryMoveTo(x,y+1,object, direction)
+      self:tryMoveTo(x,y+1,object, direction, speed)
     end
   end
   
-  room.tryMoveTo = function(self, x, y, object, direction)
-      if self:canMoveTo(x, y, object, direction) then
+  room.tryMoveTo = function(self, x, y, object, direction, speed)
+      if self:canMoveTo(x, y, object, direction, speed) then
         self:removeObject(object)
-        self:placeObject(x, y, object)
+        self:placeMovingObject(x, y, object, direction, speed)
       else
         local blocking = self:getBlockingObject(x, y, object)
         if blocking then
@@ -84,11 +93,11 @@ return function (dispatcher, width, height)
     return self.tiles[x][y]:findBlockingObject(object)
   end
   
-  room.canMoveTo = function(self, x, y, object, direction)
+  room.canMoveTo = function(self, x, y, object, direction, speed)
     if x < 0 or x >= self.width or y < 0 or y >= self.height then
       return false
     end
-    return self.tiles[x][y]:canAddMovingObject(object, direction)
+    return self.tiles[x][y]:canAddMovingObject(object, direction, speed)
   end
   
   room.dispatchToAdjacentSquares = function(self, x, y, object, name)

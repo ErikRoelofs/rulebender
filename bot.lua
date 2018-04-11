@@ -2,44 +2,33 @@ return function(dispatcher)
   local bot = {
     state = "solid"
   }
-  bot.left = function()
-    local event = {
+  
+  bot.makeMoveEvent = function(direction)
+    return {
       name = "move",
       object = bot,
-      direction = "left"
+      direction = direction,
+      speed = 2
     }
-    dispatcher:dispatch(event)
+  end
+  
+  bot.left = function()
+    dispatcher:dispatch(bot.makeMoveEvent("left"))
   end
   dispatcher:listen("bot.left", bot.left)
   
   bot.right = function()
-    local event = {
-      name = "move",
-      object = bot,
-      direction = "right"
-    }
-    dispatcher:dispatch(event)
+    dispatcher:dispatch(bot.makeMoveEvent("right"))
   end
   dispatcher:listen("bot.right", bot.right)
 
   bot.up = function()
-    local event = {
-      name = "move",
-      object = bot,
-      direction = "up"
-    }
-    dispatcher:dispatch(event)
-
+    dispatcher:dispatch(bot.makeMoveEvent("up"))
   end
   dispatcher:listen("bot.up", bot.up)
 
   bot.down = function()
-    local event = {
-      name = "move",
-      object = bot,
-      direction = "down"
-    }
-    dispatcher:dispatch(event)
+    dispatcher:dispatch(bot.makeMoveEvent("down"))
   end
   dispatcher:listen("bot.down", bot.down)
 

@@ -28,7 +28,8 @@ return function(dispatcher)
             local newEvent = {
               name = "move",
               direction = event.direction,
-              object = self.object
+              object = self.object,
+              speed = event.speed
             }
             dispatcher:dispatch(newEvent)
           end
