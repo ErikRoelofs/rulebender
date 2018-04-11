@@ -2,6 +2,7 @@ return function(dispatcher)
   return function()
     local builder = {
       object = {
+        dispatcher = dispatcher,
         draw = function() end,
       }
     }

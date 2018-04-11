@@ -1,4 +1,4 @@
-return function(objectFactory, dispatcher, key)
+return function(objectFactory, key)
   local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
@@ -15,18 +15,18 @@ return function(objectFactory, dispatcher, key)
   block.key = key
   block.active = 0
   block.maxActive = 0.5
-  dispatcher:listen("keypressed", function(event)
+  block.dispatcher:listen("keypressed", function(event)
     if event.key == block.key then
       newEvent = {
         name = "inputblock.pulse",
         value = block
       }
-      dispatcher:dispatch(newEvent)
+      block.dispatcher:dispatch(newEvent)
       block.active = block.maxActive
     end
   end)
 
-  dispatcher:listen("time.passes", function(event)
+  block.dispatcher:listen("time.passes", function(event)
     if block.active > 0 then
       block.active = block.active - math.min(event.value, block.active)
     end

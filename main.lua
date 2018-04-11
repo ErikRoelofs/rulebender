@@ -23,22 +23,20 @@
 
 function love.load()
   dispatcher = require("dispatcher")
-
   objectFactory = require("object")(dispatcher)
-
   eventLog = require("eventlog")(dispatcher)
 
   keyblockFactory = require("keyblock")
-  local blockLeft = keyblockFactory(objectFactory, dispatcher, "a")
-  local blockRight = keyblockFactory(objectFactory, dispatcher, "d")
-  local blockUp = keyblockFactory(objectFactory, dispatcher, "w")
-  local blockDown = keyblockFactory(objectFactory, dispatcher, "s")
+  local blockLeft = keyblockFactory(objectFactory, "a")
+  local blockRight = keyblockFactory(objectFactory, "d")
+  local blockUp = keyblockFactory(objectFactory, "w")
+  local blockDown = keyblockFactory(objectFactory, "s")
   
   triggerblockFactory = require("triggerblock")
   directionblocks = require("directionblocks")(objectFactory, dispatcher, triggerblockFactory)
   
   room = require("room")(dispatcher, 4,8)
-  local bot = require("bot")(dispatcher)
+  local bot = require("bot")(objectFactory)
   
   local wall = require("wall")(objectFactory)
   
