@@ -22,6 +22,18 @@ return function(dispatcher)
       return self
     end
     
+    builder.thatIsATrigger = function(self)
+      self.activatable = true
+      self.activationColor = {0,0,1}
+      return self
+    end
+  
+    builder.thatIsAnInput = function(self)
+      self.activatable = true
+      self.activationColor = {0,1,0}
+      return self
+    end
+    
     builder.go = function(self)
       if self.pushable then
         dispatcher:listen("object.pushed", function(event)
@@ -33,6 +45,44 @@ return function(dispatcher)
               speed = event.speed
             }
             dispatcher:dispatch(newEvent)
+          end
+        end)
+      end
+      
+      if self.activatable then
+        
+        self.object.active = 0
+        self.object.maxActive = 0.5
+        self.object.color = self.activationColor
+        
+        self.object.activate = function(self)
+          self.active = self.maxActive
+        end
+        
+        self.object.isActive = function(self)
+          return self.active > 0
+        end
+        
+        self.object.getActiveColor = function(self)
+          return {
+            self.color[1],
+            self.color[2],
+            self.color[3],
+            self.active / self.maxActive
+          }
+        end
+        
+        self.object.drawActiveMark = function(self)
+          if self:isActive() then
+            love.graphics.setColor(self:getActiveColor())
+            love.graphics.circle("fill", 5,5,5)
+            love.graphics.setColor(1,1,1,1)
+          end
+        end
+        
+        self.object.dispatcher:listen("time.passes", function(event)
+          if self.object.active > 0 then
+            self.object.active = self.object.active - math.min(event.value, self.object.active)
           end
         end)
       end
