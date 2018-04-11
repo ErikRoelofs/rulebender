@@ -4,39 +4,24 @@ return function(dispatcher)
     moving = false
   }
   
-  bot.makeMoveEvent = function(direction)
-    return {
+  bot.makeMoveFunction = function(direction)
+    local event = {
       name = "move",
       object = bot,
       direction = direction,
       speed = 2
     }
+    return function()
+      if bot.moving then return end
+      dispatcher:dispatch(event)
+    end
   end
   
-  bot.left = function()
-    if bot.moving then return end
-    dispatcher:dispatch(bot.makeMoveEvent("left"))
-  end
-  dispatcher:listen("bot.left", bot.left)
+  dispatcher:listen("bot.left", bot.makeMoveFunction("left"))
+  dispatcher:listen("bot.right", bot.makeMoveFunction("right"))
+  dispatcher:listen("bot.down", bot.makeMoveFunction("down"))
+  dispatcher:listen("bot.up", bot.makeMoveFunction("up"))
   
-  bot.right = function()
-    if bot.moving then return end
-    dispatcher:dispatch(bot.makeMoveEvent("right"))
-  end
-  dispatcher:listen("bot.right", bot.right)
-
-  bot.up = function()
-    if bot.moving then return end
-    dispatcher:dispatch(bot.makeMoveEvent("up"))
-  end
-  dispatcher:listen("bot.up", bot.up)
-
-  bot.down = function()
-    if bot.moving then return end
-    dispatcher:dispatch(bot.makeMoveEvent("down"))
-  end
-  dispatcher:listen("bot.down", bot.down)
-
   bot.draw = function(self)
     love.graphics.print("bot!", 0, 20)
   end
