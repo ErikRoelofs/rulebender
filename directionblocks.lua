@@ -1,45 +1,20 @@
 return function(objectFactory, dispatcher, triggerblockFactory)
   
-  local left = triggerblockFactory(objectFactory, dispatcher, function()
-    local event = {
-      name = "bot.left"
-    }
-    dispatcher:dispatch(event)
-  end, function() 
-    love.graphics.print("go left", 0, 20)
-  end)
-
-  local right = triggerblockFactory(objectFactory, dispatcher, function()
-    local event = {
-      name = "bot.right"
-    }
-    dispatcher:dispatch(event)
-  end, function() 
-    love.graphics.print("go right", 0, 20)
-  end)
-
-  local up = triggerblockFactory(objectFactory, dispatcher, function()
-    local event = {
-      name = "bot.up"
-    }
-    dispatcher:dispatch(event)
-  end, function() 
-    love.graphics.print("go up", 0, 20)
-  end)
-
-  local down = triggerblockFactory(objectFactory, dispatcher, function()
-    local event = {
-      name = "bot.down"
-    }
-    dispatcher:dispatch(event)
-  end, function() 
-    love.graphics.print("go down", 0, 20)
-  end)
+  function makeDirectionBlock(eventName, text)
+    return triggerblockFactory(objectFactory, dispatcher, function()
+      local event = {
+        name = eventName
+      }
+      dispatcher:dispatch(event)
+    end, function() 
+      love.graphics.print(text, 3, 20)
+    end)
+  end
 
   return {
-    left = left,
-    right = right,
-    up = up,
-    down = down
+    left = makeDirectionBlock("bot.left", "go left"),
+    right = makeDirectionBlock("bot.right", "go right"),
+    up = makeDirectionBlock("bot.up", "go up"),
+    down = makeDirectionBlock("bot.down", "go down")
   }
 end

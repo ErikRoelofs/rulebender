@@ -8,7 +8,7 @@ return function(dispatcher)
     }
     
     builder.thatCanBeDrawn = function(self, drawFunction)
-      self.object.draw = drawFunction
+      self.draw = drawFunction
       return self
     end
     
@@ -23,18 +23,20 @@ return function(dispatcher)
     end
     
     builder.thatIsATrigger = function(self)
-      self.activatable = true
-      self.activationColor = {0,0,1}
+      self.isTrigger = true
       return self
     end
   
     builder.thatIsAnInput = function(self)
-      self.activatable = true
-      self.activationColor = {0,1,0}
+      self.isInput = true
       return self
     end
     
     builder.go = function(self)
+      if self.draw then
+        self.object.draw = self.draw
+      end
+
       if self.pushable then
         dispatcher:listen("object.pushed", function(event)
           if event.object == self.object then
@@ -49,11 +51,10 @@ return function(dispatcher)
         end)
       end
       
-      if self.activatable then
+      if self.isInput or self.isTrigger then
         
         self.object.active = 0
         self.object.maxActive = 0.5
-        self.object.color = self.activationColor
         
         self.object.activate = function(self)
           self.active = self.maxActive
@@ -86,6 +87,45 @@ return function(dispatcher)
           end
         end)
       end
+      
+      if self.isInput then
+        self.object.color = {0,1,0}
+        
+        local oldDraw = self.object.draw
+        self.object.draw = function(self)
+          love.graphics.setColor(0.3,0.3,0.3,1)
+          love.graphics.rectangle("fill", 0, 0, 49, 49)
+          
+          love.graphics.setColor(0.5,0.5,0.5,1)
+          love.graphics.rectangle("fill", 2, 2, 47, 47)
+          
+          love.graphics.setColor(1,1,1,1)
+          oldDraw(self)
+          
+          self:drawActiveMark()
+        end
+        
+      end
+      
+      if self.isTrigger then
+        self.object.color = {0,0,1}
+        
+        local oldDraw = self.object.draw
+        self.object.draw = function(self)
+          love.graphics.setColor(0.3,0.3,0.8,1)
+          love.graphics.rectangle("fill", 0, 0, 49, 49)
+          
+          love.graphics.setColor(0.5,0.5,0.9,1)
+          love.graphics.rectangle("fill", 2, 2, 47, 47)
+          
+          love.graphics.setColor(1,1,1,1)
+          oldDraw(self)
+          
+          self:drawActiveMark()
+        end
+
+      end
+      
       
       return self.object
     end

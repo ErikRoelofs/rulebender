@@ -3,9 +3,10 @@ return function(objectFactory)
     :thatIsSolid()
     :thatCanBePushed()
     :thatIsAnInput()
-    :thatCanBeDrawn(function(self) 
-      love.graphics.print("collide", 0, 20) 
-      self:drawActiveMark()
+    :thatCanBeDrawn(function(self)
+     
+      love.graphics.print("collide", 5, 20) 
+      
     end)
     :go()
   

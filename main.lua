@@ -17,9 +17,9 @@
 
 --[[
   inputs:
-    - key
-    - collision
-    - time
+    v key
+    / collision
+    v time
     - fromTrigger?
     - motion
     - destruction
@@ -69,8 +69,8 @@ function love.load()
   local wall = require("wall")(objectFactory)
   
   --room:placeObject(3, 3, blockLeft)
-  --room:placeObject(3, 3, pulserBlock)
-  room:placeObject(3, 3, collisionblock)
+  room:placeObject(3, 3, pulserBlock)
+  --room:placeObject(3, 3, collisionblock)
   room:placeObject(3, 2, directionblocks.left)
   
   room:placeObject(1, 2, blockRight)

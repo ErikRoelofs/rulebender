@@ -123,7 +123,9 @@ return function (dispatcher, width, height)
     while i < self.width do
       j = 0
       while j < self.height do
+        love.graphics.setColor(0.8, 0.2, 0.2, 0.4)
         love.graphics.rectangle("line", i * 50, j * 50, 50, 50)
+        love.graphics.setColor(1, 1, 1, 1)
         love.graphics.push()
         love.graphics.translate(i * 50, j * 50)
         self.tiles[i][j]:draw()
