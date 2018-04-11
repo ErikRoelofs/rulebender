@@ -53,6 +53,12 @@ return function(dispatcher)
     if not self:canAddObject(object) then return end
     table.insert(self.content, object)
     self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction}
+    local event = {
+      name = "object.moving",
+      object = obj        
+    }
+    tile.dispatcher:dispatch(event)
+
   end
 
   tile.removeObject = function(self, object)
@@ -106,6 +112,11 @@ return function(dispatcher)
     end
     for _, obj in ipairs(remove) do
       tile.movingObjects[obj] = nil
+      local event = {
+        name = "object.arrived",
+        object = obj        
+      }
+      tile.dispatcher:dispatch(event)
     end
   end)
   
