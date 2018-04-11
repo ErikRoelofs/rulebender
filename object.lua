@@ -97,7 +97,7 @@ return function(dispatcher)
           love.graphics.rectangle("fill", 0, 0, 49, 49)
           
           love.graphics.setColor(0.5,0.5,0.5,1)
-          love.graphics.rectangle("fill", 2, 2, 47, 47)
+          love.graphics.rectangle("fill", 2, 2, 45, 45)
           
           love.graphics.setColor(1,1,1,1)
           oldDraw(self)
@@ -116,7 +116,7 @@ return function(dispatcher)
           love.graphics.rectangle("fill", 0, 0, 49, 49)
           
           love.graphics.setColor(0.5,0.5,0.9,1)
-          love.graphics.rectangle("fill", 2, 2, 47, 47)
+          love.graphics.rectangle("fill", 2, 2, 45, 45)
           
           love.graphics.setColor(1,1,1,1)
           oldDraw(self)
