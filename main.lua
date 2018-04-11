@@ -23,9 +23,6 @@
 
 function love.load()
   dispatcher = require("dispatcher")
-  dispatcher:listen("inputblock.pulse", function(event)
-    print(event.value.key)
-  end)
 
   objectFactory = require("object")(dispatcher)
 
@@ -63,7 +60,11 @@ function love.load()
 end
 
 function love.update(dt)
-  
+  local event = {
+    name = "time.passes",
+    value = dt
+  }
+  dispatcher:dispatch(event)
 end
 
 function love.draw()

@@ -1,20 +1,36 @@
 return function(objectFactory, dispatcher, key)
-  local inputblock = objectFactory()
+  local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
-    :thatCanBeDrawn(function(self) love.graphics.print("input", 0, 20) end)
+    :thatCanBeDrawn(function(self) 
+      love.graphics.print("input", 0, 20) 
+      if self.active > 0 then
+        love.graphics.setColor(0,1,0,self.active / self.maxActive)
+        love.graphics.circle("fill", 5,5,5)
+        love.graphics.setColor(1,1,1,1)
+      end
+    end)
     :go()
   
-  inputblock.key = key
+  block.key = key
+  block.active = 0
+  block.maxActive = 0.5
   dispatcher:listen("keypressed", function(event)
-    if event.key == inputblock.key then
+    if event.key == block.key then
       newEvent = {
         name = "inputblock.pulse",
-        value = inputblock
+        value = block
       }
       dispatcher:dispatch(newEvent)
+      block.active = block.maxActive
+    end
+  end)
+
+  dispatcher:listen("time.passes", function(event)
+    if block.active > 0 then
+      block.active = block.active - math.min(event.value, block.active)
     end
   end)
   
-  return inputblock
+  return block
 end

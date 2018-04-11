@@ -3,16 +3,27 @@ return function(objectFactory, dispatcher, effect)
   local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
-    :thatCanBeDrawn(function(self) love.graphics.print("trigger", 0, 20) end)
+    :thatCanBeDrawn(function(self) 
+      love.graphics.print("trigger", 0, 20) 
+      if self.active > 0 then
+        love.graphics.setColor(0,0,1,self.active / self.maxActive)
+        love.graphics.circle("fill", 5,5,5)
+        love.graphics.setColor(1,1,1,1)
+      end
+
+    end)
     :go()
 
   block.effect = effect
-  block.respondsTo = {},
+  block.respondsTo = {}
+  block.active = 0
+  block.maxActive = 0.5
 
   dispatcher:listen("inputblock.pulse", function(event)
     for _, innerBlock in ipairs(block.respondsTo) do
       if innerBlock == event.value then
         block.effect()
+        block.active = block.maxActive
       end
     end
   end)
@@ -39,6 +50,12 @@ return function(objectFactory, dispatcher, effect)
     table.insert(self.respondsTo, inputblock)
   end
   
+  dispatcher:listen("time.passes", function(event)
+    if block.active > 0 then
+      block.active = block.active - math.min(event.value, block.active)
+    end
+  end)
+
   block.stopRespondingTo = function(self, inputblock)
     for key, innerblock in ipairs(self.respondsTo) do
       if innerblock == inputblock then

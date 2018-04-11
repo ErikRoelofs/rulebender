@@ -6,7 +6,9 @@ return function(dispatcher)
   }
   
   dispatcher:listen("*", function(event)
-    eventLog:addEvent(event)
+    if event.name ~= "time.passes" then
+      eventLog:addEvent(event)
+    end
   end)
 
   eventLog.draw = function(self)
