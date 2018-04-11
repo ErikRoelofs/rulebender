@@ -5,6 +5,8 @@ return function(objectFactory, dispatcher, triggerblockFactory)
       name = "bot.left"
     }
     dispatcher:dispatch(event)
+  end, function() 
+    love.graphics.print("go left", 0, 20)
   end)
 
   local right = triggerblockFactory(objectFactory, dispatcher, function()
@@ -12,6 +14,8 @@ return function(objectFactory, dispatcher, triggerblockFactory)
       name = "bot.right"
     }
     dispatcher:dispatch(event)
+  end, function() 
+    love.graphics.print("go right", 0, 20)
   end)
 
   local up = triggerblockFactory(objectFactory, dispatcher, function()
@@ -19,6 +23,8 @@ return function(objectFactory, dispatcher, triggerblockFactory)
       name = "bot.up"
     }
     dispatcher:dispatch(event)
+  end, function() 
+    love.graphics.print("go up", 0, 20)
   end)
 
   local down = triggerblockFactory(objectFactory, dispatcher, function()
@@ -26,6 +32,8 @@ return function(objectFactory, dispatcher, triggerblockFactory)
       name = "bot.down"
     }
     dispatcher:dispatch(event)
+  end, function() 
+    love.graphics.print("go down", 0, 20)
   end)
 
   return {

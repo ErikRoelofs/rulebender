@@ -3,7 +3,7 @@ return function(objectFactory, dispatcher, key)
     :thatIsSolid()
     :thatCanBePushed()
     :thatCanBeDrawn(function(self) 
-      love.graphics.print("input", 0, 20) 
+      love.graphics.print("key: " .. self.key, 0, 20) 
       if self.active > 0 then
         love.graphics.setColor(0,1,0,self.active / self.maxActive)
         love.graphics.circle("fill", 5,5,5)

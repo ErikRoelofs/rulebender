@@ -1,10 +1,10 @@
-return function(objectFactory, dispatcher, effect)
+return function(objectFactory, dispatcher, effect, draweffect)
     
   local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
-    :thatCanBeDrawn(function(self) 
-      love.graphics.print("trigger", 0, 20) 
+    :thatCanBeDrawn(function(self)     
+      self:draweffect()
       if self.active > 0 then
         love.graphics.setColor(0,0,1,self.active / self.maxActive)
         love.graphics.circle("fill", 5,5,5)
@@ -15,6 +15,7 @@ return function(objectFactory, dispatcher, effect)
     :go()
 
   block.effect = effect
+  block.draweffect = draweffect
   block.respondsTo = {}
   block.active = 0
   block.maxActive = 0.5
