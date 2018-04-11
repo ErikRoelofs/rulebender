@@ -1,11 +1,11 @@
-return function()
-  local wall = {
-    state = "solid"
-  }
+return function(objectFactory)
   
-  wall.draw = function(self)
-    love.graphics.print("wall", 0, 20)
-  end
+  local wall = objectFactory()
+    :thatIsSolid()
+    :thatCanBeDrawn(function(self)
+      love.graphics.print("wall", 0, 20)
+    end)
+    :go()
   
   return wall
 end

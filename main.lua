@@ -40,7 +40,7 @@ function love.load()
   room = require("room")(dispatcher, 4,8)
   local bot = require("bot")(dispatcher)
   
-  local wall = require("wall")()
+  local wall = require("wall")(objectFactory)
   
   room:placeObject(3, 3, blockLeft)
   room:placeObject(3, 2, directionblocks.left)
