@@ -9,17 +9,11 @@
   - room
     (tracks entity positions)
     (pushes collisions)
+  - bot
+    (listens to commands)
+    (executes commands)
 
 ]]
-
---[[
-  - event / object factory
-
-
-
-
-]]
-
 
 function love.load()
   dispatcher = require("dispatcher")
@@ -32,6 +26,9 @@ function love.load()
   local blockUp = keyblockFactory(objectFactory, "w")
   local blockDown = keyblockFactory(objectFactory, "s")
   
+  pulserFactory = require("pulser")
+  local pulserBlock = pulserFactory(objectFactory, 1.5)
+  
   triggerblockFactory = require("triggerblock")
   directionblocks = require("directionblocks")(objectFactory, dispatcher, triggerblockFactory)
   
@@ -40,7 +37,8 @@ function love.load()
   
   local wall = require("wall")(objectFactory)
   
-  room:placeObject(3, 3, blockLeft)
+  --room:placeObject(3, 3, blockLeft)
+  room:placeObject(3, 3, pulserBlock)
   room:placeObject(3, 2, directionblocks.left)
   
   room:placeObject(1, 2, blockRight)
