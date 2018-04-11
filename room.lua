@@ -22,18 +22,17 @@ return function (dispatcher, width, height)
   end
 
   room.placeObject = function(self, x, y, object)
-    assert( x < self.width and y < self.height and x >= 0 and y >= 0, "Cannot place object; out of bounds." )
-    
-    self.tiles[x][y]:addObject(object)
-    self.objects[object] = {x = x, y = y}
-    
-    self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
+    self:placeMovingObject(x, y, object)
   end
   
   room.placeMovingObject = function(self, x, y, object, direction, speed)
     assert( x < self.width and y < self.height and x >= 0 and y >= 0, "Cannot place object; out of bounds." )
     
-    self.tiles[x][y]:addMovingObject(object, direction, speed)
+    if direction then
+      self.tiles[x][y]:addMovingObject(object, direction, speed)
+    else
+      self.tiles[x][y]:addObject(object)
+    end
     self.objects[object] = {x = x, y = y}
     
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")

@@ -27,18 +27,12 @@ return function(dispatcher)
       end
     end
     
-    for _, obj in ipairs(self.content) do
-      if obj.state == "solid" then
-        return false
-      end
-    end
-    
-    return true
+    return tile:canAddObject(object)
   end
 
   tile.findBlockingObject = function(self, object)
     for _, obj in ipairs(self.content) do
-      if obj.state == "impassable" then
+      if obj.state == "solid" then
         return obj
       end
     end 
@@ -47,18 +41,18 @@ return function(dispatcher)
   tile.addObject = function(self, object)
     if not self:canAddObject(object) then return end
     table.insert(self.content, object)
+    return true
   end
   
   tile.addMovingObject = function(self, object, direction, speed)
-    if not self:canAddObject(object) then return end
-    table.insert(self.content, object)
-    self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction}
-    local event = {
-      name = "object.moving",
-      object = obj        
-    }
-    tile.dispatcher:dispatch(event)
-
+    if tile:addObject(object) then
+      self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction}
+      local event = {
+        name = "object.moving",
+        object = obj
+      }
+      tile.dispatcher:dispatch(event)
+    end
   end
 
   tile.removeObject = function(self, object)
@@ -121,5 +115,4 @@ return function(dispatcher)
   end)
   
   return tile
-  
 end
