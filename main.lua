@@ -48,8 +48,9 @@ function love.load()
   dispatcher = require("dispatcher")
   objectFactory = require("object")(dispatcher)
   eventLog = require("eventlog")(dispatcher)
-
-  local loader = require("levels/loader")(dispatcher, eventLog, objectFactory)
+  library = require("levels/library")(objectFactory, dispatcher)
+    
+  local loader = require("levels/loader")(dispatcher, eventLog, library)
   room = loader(1)
   
   dispatcher:listen("level.completed", function(event)

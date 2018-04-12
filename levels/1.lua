@@ -1,65 +1,27 @@
-return function(dispatcher, objectFactory)
-    local keyblockFactory = require("keyblock")
-    local blockLeft = keyblockFactory(objectFactory, "a")
-    local blockRight = keyblockFactory(objectFactory, "d")
-    local blockUp = keyblockFactory(objectFactory, "w")
-    local blockDown = keyblockFactory(objectFactory, "s")
-    
-    local collisionblock = require("collisionblock")(objectFactory, "trigger")
-    
-    local pulserFactory = require("pulser")
-    local pulserBlock = pulserFactory(objectFactory, 1.5)
-    
-    local triggerblockFactory = require("triggerblock")
-    local directionblocks = require("directionblocks")(objectFactory, dispatcher, triggerblockFactory)
-    local didOpen = false
-    local doorTrigger = triggerblockFactory(objectFactory, dispatcher, function()
-        local event = {}
-        if didOpen then
-          event = {        
-            name = "door.close"
-          }      
-          didOpen = false
-        else
-          event = {        
-            name = "door.open"
-          }
-          didOpen = true
-        end
-        dispatcher:dispatch(event)
-      end, function() 
-        love.graphics.print("open", 3, 20)
-      end)
-    
-    
-
+return function(dispatcher, library)
+  
   local room = require("room")(dispatcher, 4,8)
-  local bot = require("bot")(objectFactory)
-  local flag = require("flag")(objectFactory)
 
-  local wall = require("wall")(objectFactory)
-  local door = require("door")(objectFactory)
-
-  room:placeObject(3, 3, blockLeft)
-  --room:placeObject(3, 3, pulserBlock)
+  --room:placeObject(3, 3, library.input.key("a"))
+  room:placeObject(3, 3, library.input.pulser(1.0))
   --room:placeObject(3, 3, collisionblock)
-  room:placeObject(3, 2, directionblocks.left)
-  room:placeObject(3, 4, doorTrigger)
+  room:placeObject(3, 2, library.trigger.move.left())
+  --room:placeObject(3, 4, doorTrigger)
 
-  room:placeObject(1, 2, blockRight)
-  room:placeObject(1, 1, directionblocks.right)
+  room:placeObject(1, 2, library.input.key("d"))
+  room:placeObject(1, 1, library.trigger.move.right())
 
-  room:placeObject(2, 4, blockUp)
-  room:placeObject(1, 4, directionblocks.up)
+  room:placeObject(2, 4, library.input.key("w"))
+  room:placeObject(1, 4, library.trigger.move.up())
 
-  room:placeObject(0, 0, blockDown)
-  room:placeObject(0, 1, directionblocks.down)
+  room:placeObject(0, 0, library.input.key("s"))
+  room:placeObject(0, 1, library.trigger.move.down())
 
-  room:placeObject(3, 7, bot)
-  room:placeObject(0, 6, wall)
-  room:placeObject(0, 7, door)
+  room:placeObject(3, 7, library.entities.bot())
+  room:placeObject(0, 6, library.entities.wall())
+  room:placeObject(0, 7, library.entities.door())
 
-  room:placeObject(1, 5, flag)
+  room:placeObject(1, 5, library.entities.flag())
 
   dispatcher:listen("room.objectsCollided", function(event)
     if event.objectA:hasType("bot") and event.objectB:hasType("flag")

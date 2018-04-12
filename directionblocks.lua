@@ -12,9 +12,9 @@ return function(objectFactory, dispatcher, triggerblockFactory)
   end
 
   return {
-    left = makeDirectionBlock("bot.left", "go left"),
-    right = makeDirectionBlock("bot.right", "go right"),
-    up = makeDirectionBlock("bot.up", "go up"),
-    down = makeDirectionBlock("bot.down", "go down")
+    left = function() return makeDirectionBlock("bot.left", "go left") end,
+    right = function() return makeDirectionBlock("bot.right", "go right") end,
+    up = function() return makeDirectionBlock("bot.up", "go up") end,
+    down = function() return makeDirectionBlock("bot.down", "go down") end
   }
 end
