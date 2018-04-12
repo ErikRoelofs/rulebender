@@ -22,20 +22,23 @@ return function (dispatcher, width, height)
   end
 
   room.placeObject = function(self, x, y, object)
-    self:placeMovingObject(x, y, object)
+    return self:placeMovingObject(x, y, object)
   end
   
   room.placeMovingObject = function(self, x, y, object, direction, speed)
     assert( x < self.width and y < self.height and x >= 0 and y >= 0, "Cannot place object; out of bounds." )
     
+    local added
     if direction then
-      self.tiles[x][y]:addMovingObject(object, direction, speed)
+      added = self.tiles[x][y]:addMovingObject(object, direction, speed)
     else
-      self.tiles[x][y]:addObject(object)
+      added = self.tiles[x][y]:addObject(object)
     end
-    self.objects[object] = {x = x, y = y}
-    
-    self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
+    if added then
+      self.objects[object] = {x = x, y = y}
+      self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
+    end
+    return added
   end
 
   room._findObjectLocation = function(self, object)
@@ -48,9 +51,21 @@ return function (dispatcher, width, height)
     end
   end)
   
+  dispatcher:listen("object.replace", function(event)
+    if room.objects[event.existingObject] then      
+      local x, y = room:_findObjectLocation(event.existingObject)
+      room:removeObject(event.existingObject)
+      local success = room:placeObject(x, y, event.newObject)
+      if not success then
+        room:placeObject(x,y,event.existingObject)
+      end
+    end
+  end)
+  
   room.removeObject = function(self, object)
     local x, y = self:_findObjectLocation(object)
     self.tiles[x][y]:removeObject(object)
+    self.objects[object] = nil
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNoLongerAdjacent")
   end
   

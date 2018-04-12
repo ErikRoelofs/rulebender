@@ -5,29 +5,32 @@ return function(dispatcher)
     movingObjects = {}
   }
   
-  tile.canAddObject = function(self, object)
-    for _, obj in ipairs(self.content) do
-      if obj.state == "solid" then
-        return false
+  tile.canAddObject = function(self, objectToPlace)
+    if objectToPlace.state == "solid" then
+      for _, existingObject in ipairs(self.content) do
+        if existingObject.state == "solid" then
+          return false
+        end
       end
     end
     return true
   end
   
-  tile.canAddMovingObject = function(self, object, direction, speed)
-    for _, obj in ipairs(self.content) do
-      if obj.state == "solid" then
-        local event = {
-          name = "object.pushed",
-          object = obj,
-          direction = direction,
-          speed = speed
-        }
-        self.dispatcher:dispatch(event)
+  tile.canAddMovingObject = function(self, objectToPlace, direction, speed)
+    if objectToPlace.state == "solid" then
+      for _, existingObject in ipairs(self.content) do
+        if existingObject.state == "solid" then
+          local event = {
+            name = "object.pushed",
+            object = existingObject,
+            direction = direction,
+            speed = speed
+          }
+          self.dispatcher:dispatch(event)
+        end
       end
     end
-    
-    return tile:canAddObject(object)
+    return tile:canAddObject(objectToPlace)
   end
 
   tile.findBlockingObject = function(self, object)
@@ -52,6 +55,7 @@ return function(dispatcher)
         object = obj
       }
       tile.dispatcher:dispatch(event)
+      return true
     end
   end
 
