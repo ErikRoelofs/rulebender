@@ -33,6 +33,8 @@ return function(objectFactory)
   bot.dispatcher:listen("object.arrived", function(event)
     bot.moving = false
   end)
+
+  bot:addType("bot")
   
   return bot
 end

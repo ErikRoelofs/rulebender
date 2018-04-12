@@ -84,6 +84,7 @@ function love.load()
   
   room = require("room")(dispatcher, 4,8)
   local bot = require("bot")(objectFactory)
+  local flag = require("flag")(objectFactory)
   
   local wall = require("wall")(objectFactory)
   local door = require("door")(objectFactory)
@@ -106,6 +107,16 @@ function love.load()
   room:placeObject(3, 7, bot)
   room:placeObject(0, 6, wall)
   room:placeObject(0, 7, door)
+  
+  room:placeObject(1, 5, flag)
+  
+  dispatcher:listen("room.objectsCollided", function(event)
+    if event.objectA:hasType("bot") and event.objectB:hasType("flag")
+    or event.objectB:hasType("bot") and event.objectA:hasType("flag") then
+      dispatcher:dispatch({name="level.completed"})
+    end
+      
+  end)
   
 end
 
