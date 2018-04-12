@@ -4,6 +4,7 @@ return function(objectFactory, dispatcher)
   local collisionblockFactory = require("input/collisionblock")
   local triggerblockFactory = require("trigger/triggerblock")
   local directionblocksFactory = require("trigger/directionblocks") (objectFactory, dispatcher, triggerblockFactory)
+  local doorFactory = require("trigger/door")
   
   return {
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
@@ -19,23 +20,7 @@ return function(objectFactory, dispatcher)
           down = function() return directionblocksFactory.down() end,
           up = function() return directionblocksFactory.up() end,
         },
-        door = function(identifier)          
-          local doorIsClosed = true 
-          return triggerblockFactory(objectFactory, dispatcher, 
-            function()
-              if doorIsClosed then
-                doorIsClosed = false
-                dispatcher:dispatch({name="door.open", targetId=identifier})
-              else
-                doorIsClosed = true
-                dispatcher:dispatch({name="door.close", targetId=identifier})
-              end            
-            end,
-            function()
-              love.graphics.print("doorswitch", 4, 20)
-            end
-          )
-        end
+        door = function(identifier) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier) end        
       },
       entities = {
         bot = function() return require("entity/bot")(objectFactory) end,
