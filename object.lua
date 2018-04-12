@@ -2,33 +2,47 @@ return function(dispatcher)
   return function()
     local builder = {
       object = {
+        types = {
+          object = true
+        },
         dispatcher = dispatcher,
         draw = function() end,
+        addType = function(self, newType)
+          self.types[newType] = true
+        end,
+        hasType = function(self, someType)
+          return self.types[someType]
+        end
       }
     }
     
     builder.thatCanBeDrawn = function(self, drawFunction)
       self.draw = drawFunction
+      self.object.types.drawable = true
       return self
     end
     
     builder.thatCanBePushed = function(self)
       self.pushable = true
+      self.object.types.pushable = true
       return self
     end
 
     builder.thatIsSolid = function(self)
       self.object.state = "solid"
+      self.object.types.solid = true
       return self
     end
     
     builder.thatIsATrigger = function(self)
       self.isTrigger = true
+      self.object.types.trigger = true
       return self
     end
   
     builder.thatIsAnInput = function(self)
       self.isInput = true
+      self.object.types.input = true
       return self
     end
     

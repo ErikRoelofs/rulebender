@@ -1,4 +1,4 @@
-return function(objectFactory)
+return function(objectFactory, collisionType)
   local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
@@ -11,12 +11,14 @@ return function(objectFactory)
     :go()
   
   block.dispatcher:listen("room.objectsCollided", function(event)
-    newEvent = {
-      name = "inputblock.pulse",
-      value = block
-    }
-    block.dispatcher:dispatch(newEvent)
-    block:activate()
+    if event.objectA:hasType(collisionType) or event.objectB:hasType(collisionType) then
+      local newEvent = {
+        name = "inputblock.pulse",
+        value = block
+      }
+      block.dispatcher:dispatch(newEvent)
+      block:activate()
+    end
   end)
 
   return block
