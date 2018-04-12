@@ -80,13 +80,13 @@ return function(dispatcher)
   
   tile.translateForMovement = function(time, maxTime, direction)
     if direction == "right" then
-      love.graphics.translate(-50 * (time/maxTime), 0)
+      love.graphics.translate(-CONST.TILE_WIDTH * (time/maxTime), 0)
     elseif direction == "left" then
-      love.graphics.translate(50 * (time/maxTime), 0)
+      love.graphics.translate(CONST.TILE_WIDTH * (time/maxTime), 0)
     elseif direction == "up" then
-      love.graphics.translate(0, 50 * (time/maxTime))
+      love.graphics.translate(0, CONST.TILE_HEIGHT * (time/maxTime))
     elseif direction == "down" then
-      love.graphics.translate(0, -50 * (time/maxTime))
+      love.graphics.translate(0, -CONST.TILE_HEIGHT * (time/maxTime))
     end
   end
   

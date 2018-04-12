@@ -139,10 +139,10 @@ return function (dispatcher, width, height)
       j = 0
       while j < self.height do
         love.graphics.setColor(0.8, 0.2, 0.2, 0.4)
-        love.graphics.rectangle("line", i * 50, j * 50, 50, 50)
+        love.graphics.rectangle("line", i * CONST.TILE_WIDTH, j * CONST.TILE_HEIGHT, CONST.TILE_WIDTH, CONST.TILE_HEIGHT)
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.push()
-        love.graphics.translate(i * 50, j * 50)
+        love.graphics.translate(i * CONST.TILE_WIDTH, j * CONST.TILE_HEIGHT)
         self.tiles[i][j]:draw()
         love.graphics.pop()
         j = j + 1

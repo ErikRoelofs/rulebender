@@ -44,6 +44,12 @@
 
 ]]
 
+-- global constants
+CONST = {
+  TILE_WIDTH = 100,
+  TILE_HEIGHT = 100
+}
+
 function love.load()
   dispatcher = require("dispatcher")
   objectFactory = require("object")(dispatcher)
@@ -80,7 +86,7 @@ function love.draw()
   room:draw()
   
   love.graphics.push()
-  love.graphics.translate(500,0)
+  love.graphics.translate(600,0)
   eventLog:draw()
   love.graphics.pop()
 end

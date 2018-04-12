@@ -113,10 +113,10 @@ return function(dispatcher)
         local oldDraw = self.object.draw
         self.object.draw = function(self)
           love.graphics.setColor(0.3,0.3,0.3,1)
-          love.graphics.rectangle("fill", 0, 0, 49, 49)
+          love.graphics.rectangle("fill", 0, 0, CONST.TILE_WIDTH, CONST.TILE_HEIGHT)
           
           love.graphics.setColor(0.5,0.5,0.5,1)
-          love.graphics.rectangle("fill", 2, 2, 45, 45)
+          love.graphics.rectangle("fill", 2, 2, CONST.TILE_WIDTH - 4, CONST.TILE_HEIGHT - 4)
           
           love.graphics.setColor(1,1,1,1)
           oldDraw(self)
@@ -132,10 +132,10 @@ return function(dispatcher)
         local oldDraw = self.object.draw
         self.object.draw = function(self)
           love.graphics.setColor(0.3,0.3,0.8,1)
-          love.graphics.rectangle("fill", 0, 0, 49, 49)
+          love.graphics.rectangle("fill", 0, 0, CONST.TILE_WIDTH, CONST.TILE_HEIGHT)
           
           love.graphics.setColor(0.5,0.5,0.9,1)
-          love.graphics.rectangle("fill", 2, 2, 45, 45)
+          love.graphics.rectangle("fill", 2, 2, CONST.TILE_WIDTH - 4, CONST.TILE_HEIGHT - 4)
           
           love.graphics.setColor(1,1,1,1)
           oldDraw(self)
