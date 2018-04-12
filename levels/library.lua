@@ -1,6 +1,7 @@
 return function(objectFactory, dispatcher)
   local keyblockFactory = require("input/keyblock")
   local pulserFactory = require("input/pulser")
+  local motionFactory = require("input/motion")
   local collisionblockFactory = require("input/collisionblock")
   local triggerblockFactory = require("trigger/triggerblock")
   local directionblocksFactory = require("trigger/directionblocks") (objectFactory, dispatcher, triggerblockFactory)
@@ -12,6 +13,7 @@ return function(objectFactory, dispatcher)
         key = function(key) return keyblockFactory(objectFactory, key) end,
         collision = function(objectType) return collisionblockFactory(objectFactory, objectType) end,
         pulser = function(timer) return pulserFactory(objectFactory, timer) end,
+        motion = function(timer) return motionFactory(objectFactory, timer) end,
       },
       trigger = {
         move = {

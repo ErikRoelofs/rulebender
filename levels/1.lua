@@ -2,11 +2,13 @@ return function(dispatcher, library)
   
   local room = require("room")(dispatcher, 4,8)
 
-  --room:placeObject(3, 3, library.input.key("a"))
-  room:placeObject(3, 3, library.input.pulser(1.0))
+  room:placeObject(3, 3, library.input.key("a"))
+  --room:placeObject(3, 3, library.input.pulser(1.0))
   --room:placeObject(3, 3, collisionblock)
   room:placeObject(3, 2, library.trigger.move.left())
   room:placeObject(3, 4, library.trigger.door("someId"))
+  
+  room:placeObject(2, 3, library.input.motion(0.3))
 
   room:placeObject(1, 2, library.input.key("d"))
   room:placeObject(1, 1, library.trigger.move.right())
