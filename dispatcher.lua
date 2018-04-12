@@ -22,4 +22,8 @@ dispatcher.listen = function(self, name, callback)
   table.insert(self.listeners[name], callback)
 end
 
+dispatcher.flush = function(self)
+  self.listeners = {}
+end
+
 return dispatcher

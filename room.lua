@@ -150,6 +150,6 @@ return function (dispatcher, width, height)
       i = i + 1
     end
   end
-
+  
   return room
 end

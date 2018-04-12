@@ -5,11 +5,13 @@ return function(dispatcher)
     events = {}
   }
   
-  dispatcher:listen("*", function(event)
-    if event.name ~= "time.passes" then
-      eventLog:addEvent(event)
-    end
-  end)
+  eventLog.register = function(self)  
+    dispatcher:listen("*", function(event)
+      if event.name ~= "time.passes" then
+        eventLog:addEvent(event)
+      end
+    end)
+  end
 
   eventLog.draw = function(self)
     for i, event in ipairs(self.events) do
@@ -22,6 +24,10 @@ return function(dispatcher)
     if #self.events > 25 then
       table.remove(self.events, 1)
     end
+  end
+  
+  eventLog.flush = function(self, event)
+    self.events = {}
   end
 
   return eventLog
