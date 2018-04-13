@@ -22,7 +22,8 @@ return function(objectFactory, dispatcher)
           down = function() return directionblocksFactory.down() end,
           up = function() return directionblocksFactory.up() end,
         },
-        door = function(identifier) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier) end        
+        door = function(identifier) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier) end,
+        death = function() return triggerblockFactory(objectFactory, dispatcher, function(event) dispatcher:dispatch({name="bot.death"}) end, function(self) love.graphics.print("DEATH", 4, 20) end) end
       },
       entities = {
         bot = function() return require("entity/bot")(objectFactory) end,

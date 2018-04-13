@@ -3,7 +3,11 @@ return function(objectFactory)
   local bot = objectFactory()
     :thatIsSolid()
     :thatCanBeDrawn(function(self)
-      love.graphics.print("bot!", 0, 20)
+      if not self.dead then
+        love.graphics.print("bot!", 0, 20)
+      else
+        love.graphics.print("dead bot :(", 0, 20)
+      end
     end)
     :go()
   
@@ -21,18 +25,26 @@ return function(objectFactory)
     end
   end
   
-  bot.dispatcher:listen("bot.left", bot.makeMoveFunction("left"))
-  bot.dispatcher:listen("bot.right", bot.makeMoveFunction("right"))
-  bot.dispatcher:listen("bot.down", bot.makeMoveFunction("down"))
-  bot.dispatcher:listen("bot.up", bot.makeMoveFunction("up"))
+  bot.dead = false
+  local deregAll = {}
   
-  bot.dispatcher:listen("object.moving", function(event)
+  table.insert( deregAll, bot.dispatcher:listen("bot.left", bot.makeMoveFunction("left")))
+  table.insert( deregAll, bot.dispatcher:listen("bot.right", bot.makeMoveFunction("right")))
+  table.insert( deregAll, bot.dispatcher:listen("bot.down", bot.makeMoveFunction("down")))
+  table.insert( deregAll, bot.dispatcher:listen("bot.up", bot.makeMoveFunction("up")))
+  
+  table.insert( deregAll, bot.dispatcher:listen("bot.death", function(event)
+    for _, f in ipairs(deregAll) do f() end
+    bot.dead = true
+  end))
+  
+  table.insert( deregAll, bot.dispatcher:listen("object.moving", function(event)
     bot.moving = true
-  end)
+  end))
   
-  bot.dispatcher:listen("object.arrived", function(event)
+  table.insert( deregAll, bot.dispatcher:listen("object.arrived", function(event)
     bot.moving = false
-  end)
+  end))
 
   bot:addType("bot")
   

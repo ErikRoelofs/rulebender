@@ -46,8 +46,8 @@
 
 -- global constants
 CONST = {
-  TILE_WIDTH = 100,
-  TILE_HEIGHT = 100
+  TILE_WIDTH = 60,
+  TILE_HEIGHT = 60
 }
 
 function love.load()

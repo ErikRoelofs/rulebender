@@ -17,6 +17,7 @@ return function(dispatcher, library)
   room:placeObject(1, 4, library.trigger.move.up())
 
   room:placeObject(0, 0, library.input.key("s"))
+  room:placeObject(1, 0, library.trigger.death())
   room:placeObject(0, 1, library.trigger.move.down())
 
   room:placeObject(3, 7, library.entities.bot())
