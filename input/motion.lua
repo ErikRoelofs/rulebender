@@ -16,6 +16,18 @@ return function(objectFactory, delay)
     end
   end)
 
+  dispatcher:listen("room.objectsNowAdjacent", function(event)
+    if event.objectA == block or event.objectB == block then
+      block.delaying = delay
+    end
+  end)
+  
+  dispatcher:listen("room.objectsNoLongerAdjacent", function(event)
+    if event.objectA == block or event.objectB == block then
+      block.delaying = delay
+    end
+  end)
+
   block.dispatcher:listen("time.passes", function(event)
     if block.delaying > 0 then
       block.delaying = block.delaying - event.value
