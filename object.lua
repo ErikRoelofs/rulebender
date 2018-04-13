@@ -124,6 +124,15 @@ return function(dispatcher)
           self:drawActiveMark()
         end
         
+        self.object.pulse = function(self)
+          newEvent = {
+            name = "inputblock.pulse",
+            value = self
+          }
+          self.dispatcher:dispatch(newEvent)
+          self:activate()
+        end
+        
       end
       
       if self.isTrigger then

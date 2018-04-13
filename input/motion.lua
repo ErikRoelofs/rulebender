@@ -32,12 +32,7 @@ return function(objectFactory, delay)
     if block.delaying > 0 then
       block.delaying = block.delaying - event.value
       if block.delaying <= 0 then
-        newEvent = {
-          name = "inputblock.pulse",
-          value = block
-        }
-        block.dispatcher:dispatch(newEvent)
-        block:activate()
+        block:pulse()
       end
     end
   end)

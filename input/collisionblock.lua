@@ -12,12 +12,7 @@ return function(objectFactory, collisionType)
   
   block.dispatcher:listen("room.objectsCollided", function(event)
     if event.objectA:hasType(collisionType) or event.objectB:hasType(collisionType) then
-      local newEvent = {
-        name = "inputblock.pulse",
-        value = block
-      }
-      block.dispatcher:dispatch(newEvent)
-      block:activate()
+      block:pulse()
     end
   end)
 

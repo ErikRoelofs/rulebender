@@ -17,8 +17,7 @@ return function(objectFactory, cooldown)
     block.cooldown = block.cooldown - event.value
     if block.cooldown < 0 then
       block.cooldown = block.maxCooldown
-      block.dispatcher:dispatch({name = "inputblock.pulse", value=block})
-      block:activate()
+      block:pulse()
     end
   end)
   
