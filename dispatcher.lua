@@ -20,6 +20,18 @@ dispatcher.listen = function(self, name, callback)
     self.listeners[name] = {}
   end
   table.insert(self.listeners[name], callback)
+  return function()
+    dispatcher:deregister(name, callback)
+  end
+end
+
+dispatcher.deregister = function(self, name, callback)
+  if not self.listeners[name] then return end
+  for key, registeredCallback in ipairs(self.listeners[name]) do
+    if callback == registeredCallback then
+      table.remove(self.listeners[name], key)
+    end
+  end
 end
 
 dispatcher.flush = function(self)

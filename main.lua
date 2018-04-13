@@ -60,7 +60,7 @@ function love.load()
   room = loader(1)
   
   dispatcher:listen("level.completed", function(event)
-    wait = 1
+    wait = 0.2
     dispatcher:listen("time.passes", function(event)
       wait = wait - event.value
       if wait <= 0 then
