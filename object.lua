@@ -77,10 +77,17 @@ return function(dispatcher)
         
         self.object.activate = function(self)
           self.active = self.maxActive
+          local dereg
+          dereg = self.dispatcher:listen("time.passes", function(event)
+            self.active = self.active - math.min(event.value, self.active)
+            if self.active <= 0 then              
+              dereg()
+            end
+          end)
         end
         
         self.object.isActive = function(self)
-          return self.active > 0
+          return self.active > 0        
         end
         
         self.object.getActiveColor = function(self)
@@ -98,13 +105,8 @@ return function(dispatcher)
             love.graphics.circle("fill", 5,5,5)
             love.graphics.setColor(1,1,1,1)
           end
-        end
+        end        
         
-        self.object.dispatcher:listen("time.passes", function(event)
-          if self.object.active > 0 then
-            self.object.active = self.object.active - math.min(event.value, self.object.active)
-          end
-        end)
       end
       
       if self.isInput then
