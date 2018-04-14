@@ -115,19 +115,22 @@ return function (dispatcher, width, height)
   end
   
   room.dispatchToAdjacentSquares = function(self, x, y, object, name)
-    self:dispatchAdjacencyEvent(x-1, y, object, name)
-    self:dispatchAdjacencyEvent(x+1, y, object, name)
-    self:dispatchAdjacencyEvent(x, y-1, object, name)
-    self:dispatchAdjacencyEvent(x, y+1, object, name)
+    self:dispatchAdjacencyEvent(x-1, y, object, name, "left")
+    self:dispatchAdjacencyEvent(x+1, y, object, name, "right")
+    self:dispatchAdjacencyEvent(x, y-1, object, name, "up")
+    self:dispatchAdjacencyEvent(x, y+1, object, name, "down")
   end
   
   room.dispatchAdjacencyEvent = function(self, x, y, adjacentObject, eventName, direction)
     if x < 0 or x >= self.width or y < 0 or y >= self.height then return end
-    for _, object in ipairs(self.tiles[x][y]:getContents()) do
+    for _, object in ipairs(self.tiles[x][y]:getContents()) do      
       local event = {
         name = eventName,
         objectA = object,
-        objectB = adjacentObject
+        objectB = adjacentObject,
+        newObject = adjacentObject,
+        existingObject = object,
+        direction = direction
       }
       self.dispatcher:dispatch(event)
     end

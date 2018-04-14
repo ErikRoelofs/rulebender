@@ -34,18 +34,28 @@ return function(dispatcher)
       return self
     end
     
-    builder.thatIsATrigger = function(self)
+    builder.thatIsATrigger = function(self, directions)
       self.isTrigger = true
+      if directions then
+        self.object.triggerDirections = directions
+      else
+        self.object.triggerDirections = { left = true, right = true, up = true, down = true }
+      end
       self.object.types.trigger = true
       return self
     end
   
-    builder.thatIsAnInput = function(self)
+    builder.thatIsAnInput = function(self, directions)
       self.isInput = true
+      if directions then
+        self.object.inputDirections = directions
+      else
+        self.object.inputDirections = { left = true, right = true, up = true, down = true }
+      end
       self.object.types.input = true
       return self
     end
-    
+        
     builder.withIdentifier = function(self, identifier)
       self.object.id = identifier
       return self
@@ -124,6 +134,20 @@ return function(dispatcher)
           oldDraw(self)
           
           self:drawActiveMark()
+          
+          if self.inputDirections.left then
+            love.graphics.print("l", 2, (CONST.TILE_HEIGHT / 2) - 10 )
+          end
+          if self.inputDirections.right then
+            love.graphics.print("r", CONST.TILE_WIDTH - 10, CONST.TILE_HEIGHT / 2 - 10 )
+          end
+          if self.inputDirections.down then
+            love.graphics.print("d", CONST.TILE_WIDTH / 2 - 10, CONST.TILE_HEIGHT - 15 )
+          end
+          if self.inputDirections.up then
+            love.graphics.print("u", CONST.TILE_WIDTH / 2 - 10, 2 )
+          end
+          
         end
         
         self.object.pulse = function(self)
@@ -152,6 +176,20 @@ return function(dispatcher)
           oldDraw(self)
           
           self:drawActiveMark()
+          
+          if self.triggerDirections.left then
+            love.graphics.print("l", 2, (CONST.TILE_HEIGHT / 2) - 10 )
+          end
+          if self.triggerDirections.right then
+            love.graphics.print("r", CONST.TILE_WIDTH - 10, CONST.TILE_HEIGHT / 2 - 10 )
+          end
+          if self.triggerDirections.down then
+            love.graphics.print("d", CONST.TILE_WIDTH / 2 - 10, CONST.TILE_HEIGHT - 15 )
+          end
+          if self.triggerDirections.up then
+            love.graphics.print("u", CONST.TILE_WIDTH / 2 - 10, 2 )
+          end
+
         end
 
       end
