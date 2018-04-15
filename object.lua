@@ -138,21 +138,21 @@ return function(dispatcher)
           love.graphics.setColor(0,1,0,1)
           if self.inputDirections.left then
             local xTip = 2
-            local yTip = (CONST.TILE_HEIGHT / 2) - 10
+            local yTip = (CONST.TILE_HEIGHT / 2) - 5
             love.graphics.polygon("fill", xTip, yTip, xTip + 5, yTip + 5, xTip + 5, yTip- 5)
           end
           if self.inputDirections.right then
             local xTip = CONST.TILE_WIDTH - 2
-            local yTip = (CONST.TILE_HEIGHT / 2) + 10
+            local yTip = (CONST.TILE_HEIGHT / 2) + 5
             love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip - 5, yTip- 5)
           end
           if self.inputDirections.down then
-            local xTip = CONST.TILE_WIDTH / 2 - 10
-            local yTip = CONST.TILE_HEIGHT - 2            
+            local xTip = CONST.TILE_WIDTH / 2 - 5
+            local yTip = CONST.TILE_HEIGHT - 2
             love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip - 5, xTip + 5, yTip - 5)
           end
           if self.inputDirections.up then
-            local xTip = CONST.TILE_WIDTH / 2 + 10
+            local xTip = CONST.TILE_WIDTH / 2 + 5
             local yTip = 2
             love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip + 5, yTip + 5)            
           end
@@ -189,21 +189,21 @@ return function(dispatcher)
           love.graphics.setColor(0,0,1,1)
           if self.triggerDirections.left then
             local xTip = 7
-            local yTip = (CONST.TILE_HEIGHT / 2) + 10
+            local yTip = (CONST.TILE_HEIGHT / 2) + 5
             love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip - 5, yTip- 5)
           end
           if self.triggerDirections.right then
             local xTip = CONST.TILE_WIDTH - 7
-            local yTip = (CONST.TILE_HEIGHT / 2) - 10
+            local yTip = (CONST.TILE_HEIGHT / 2) - 5
             love.graphics.polygon("fill", xTip, yTip, xTip + 5, yTip + 5, xTip + 5, yTip- 5)
           end
           if self.triggerDirections.down then
-            local xTip = CONST.TILE_WIDTH / 2 + 10
+            local xTip = CONST.TILE_WIDTH / 2 + 5
             local yTip = CONST.TILE_HEIGHT - 7
             love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip + 5, yTip + 5)
           end
           if self.triggerDirections.up then
-            local xTip = CONST.TILE_WIDTH / 2 - 10
+            local xTip = CONST.TILE_WIDTH / 2 - 5
             local yTip = 7
             love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip - 5, xTip + 5, yTip - 5)            
           end
