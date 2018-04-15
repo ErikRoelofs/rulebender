@@ -10,7 +10,7 @@ return function(objectFactory, dispatcher)
   return {
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
       input = {
-        key = function(key) return keyblockFactory(objectFactory, key) end,
+        key = function(key, directions) return keyblockFactory(objectFactory, key, directions) end,
         collision = function(objectType) return collisionblockFactory(objectFactory, objectType) end,
         pulser = function(timer) return pulserFactory(objectFactory, timer) end,
         motion = function(timer) return motionFactory(objectFactory, timer) end,

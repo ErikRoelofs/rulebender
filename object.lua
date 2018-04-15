@@ -135,19 +135,28 @@ return function(dispatcher)
           
           self:drawActiveMark()
           
+          love.graphics.setColor(0,1,0,1)
           if self.inputDirections.left then
-            love.graphics.print("l", 2, (CONST.TILE_HEIGHT / 2) - 10 )
+            local xTip = 2
+            local yTip = (CONST.TILE_HEIGHT / 2) - 10
+            love.graphics.polygon("fill", xTip, yTip, xTip + 5, yTip + 5, xTip + 5, yTip- 5)
           end
           if self.inputDirections.right then
-            love.graphics.print("r", CONST.TILE_WIDTH - 10, CONST.TILE_HEIGHT / 2 - 10 )
+            local xTip = CONST.TILE_WIDTH - 2
+            local yTip = (CONST.TILE_HEIGHT / 2) + 10
+            love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip - 5, yTip- 5)
           end
           if self.inputDirections.down then
-            love.graphics.print("d", CONST.TILE_WIDTH / 2 - 10, CONST.TILE_HEIGHT - 15 )
+            local xTip = CONST.TILE_WIDTH / 2 - 10
+            local yTip = CONST.TILE_HEIGHT - 2            
+            love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip - 5, xTip + 5, yTip - 5)
           end
           if self.inputDirections.up then
-            love.graphics.print("u", CONST.TILE_WIDTH / 2 - 10, 2 )
+            local xTip = CONST.TILE_WIDTH / 2 + 10
+            local yTip = 2
+            love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip + 5, yTip + 5)            
           end
-          
+
         end
         
         self.object.pulse = function(self)
@@ -177,17 +186,26 @@ return function(dispatcher)
           
           self:drawActiveMark()
           
+          love.graphics.setColor(0,0,1,1)
           if self.triggerDirections.left then
-            love.graphics.print("l", 2, (CONST.TILE_HEIGHT / 2) - 10 )
+            local xTip = 7
+            local yTip = (CONST.TILE_HEIGHT / 2) + 10
+            love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip - 5, yTip- 5)
           end
           if self.triggerDirections.right then
-            love.graphics.print("r", CONST.TILE_WIDTH - 10, CONST.TILE_HEIGHT / 2 - 10 )
+            local xTip = CONST.TILE_WIDTH - 7
+            local yTip = (CONST.TILE_HEIGHT / 2) - 10
+            love.graphics.polygon("fill", xTip, yTip, xTip + 5, yTip + 5, xTip + 5, yTip- 5)
           end
           if self.triggerDirections.down then
-            love.graphics.print("d", CONST.TILE_WIDTH / 2 - 10, CONST.TILE_HEIGHT - 15 )
+            local xTip = CONST.TILE_WIDTH / 2 + 10
+            local yTip = CONST.TILE_HEIGHT - 7
+            love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip + 5, xTip + 5, yTip + 5)
           end
           if self.triggerDirections.up then
-            love.graphics.print("u", CONST.TILE_WIDTH / 2 - 10, 2 )
+            local xTip = CONST.TILE_WIDTH / 2 - 10
+            local yTip = 7
+            love.graphics.polygon("fill", xTip, yTip, xTip - 5, yTip - 5, xTip + 5, yTip - 5)            
           end
 
         end
