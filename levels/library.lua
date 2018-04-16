@@ -6,6 +6,7 @@ return function(objectFactory, dispatcher)
   local triggerblockFactory = require("trigger/triggerblock")
   local directionblocksFactory = require("trigger/directionblocks") (objectFactory, dispatcher, triggerblockFactory)
   local doorFactory = require("trigger/door")
+  local pusherblockFactory = require("trigger/pusherblock")
   
   return {
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
@@ -23,7 +24,8 @@ return function(objectFactory, dispatcher)
           up = function(directions) return directionblocksFactory.up(directions) end,
         },
         door = function(identifier, directions) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier, directions) end,
-        death = function(directions) return triggerblockFactory(objectFactory, dispatcher, function(event) dispatcher:dispatch({name="bot.death"}) end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end
+        death = function(directions) return triggerblockFactory(objectFactory, dispatcher, function(self) return function(event) dispatcher:dispatch({name="bot.death"}) end end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end,
+        pusher = function(directions) return pusherblockFactory(triggerblockFactory, objectFactory, dispatcher, directions) end,
       },
       entities = {
         bot = function() return require("entity/bot")(objectFactory) end,

@@ -51,6 +51,15 @@ return function (dispatcher, width, height)
     end
   end)
   
+  dispatcher:listen("push", function(event)
+    if room.objects[event.object] then
+      local x, y = room:_findObjectLocation(event.object)
+      if event.direction == "down" then
+        room.tiles[x][y+1]:pushContents(event.direction, event.speed)
+      end
+    end
+  end)
+  
   dispatcher:listen("object.replace", function(event)
     if room.objects[event.existingObject] then      
       local x, y = room:_findObjectLocation(event.existingObject)

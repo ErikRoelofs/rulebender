@@ -10,7 +10,7 @@ return function(objectFactory, dispatcher, effect, draweffect, directions)
     end)
     :go()
 
-  block.effect = effect
+  block.effect = effect(block)
   block.draweffect = draweffect
   block.respondsTo = {}
 

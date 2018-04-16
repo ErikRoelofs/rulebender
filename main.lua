@@ -47,6 +47,12 @@ if debug then require("mobdebug").start() end
 
 ]]
 
+--[[
+  refactor: input should propagate signal only in right directions
+    ( removes weird direction checking code; eliminates need for trigger to monitor adjacency )
+  
+]]
+
 -- global constants
 CONST = {
   TILE_WIDTH = 60,

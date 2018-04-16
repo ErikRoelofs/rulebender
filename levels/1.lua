@@ -8,7 +8,8 @@ return function(dispatcher, library)
   room:placeObject(3, 2, library.trigger.move.left({ down = true}))
   room:placeObject(3, 4, library.trigger.door("someId"))
   
-  room:placeObject(2, 3, library.input.motion(0.3))
+  room:placeObject(2, 3, library.input.motion(0.6))
+  room:placeObject(2, 2, library.trigger.pusher({down = true}))
 
   room:placeObject(1, 2, library.input.key("d"))
   room:placeObject(1, 1, library.trigger.move.right())
