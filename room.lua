@@ -115,10 +115,10 @@ return function (dispatcher, width, height)
   end
   
   room.dispatchToAdjacentSquares = function(self, x, y, object, name)
-    self:dispatchAdjacencyEvent(x-1, y, object, name, "left")
-    self:dispatchAdjacencyEvent(x+1, y, object, name, "right")
-    self:dispatchAdjacencyEvent(x, y-1, object, name, "up")
-    self:dispatchAdjacencyEvent(x, y+1, object, name, "down")
+    self:dispatchAdjacencyEvent(x-1, y, object, name, "right")
+    self:dispatchAdjacencyEvent(x+1, y, object, name, "left")
+    self:dispatchAdjacencyEvent(x, y-1, object, name, "down")
+    self:dispatchAdjacencyEvent(x, y+1, object, name, "up")
   end
   
   room.dispatchAdjacencyEvent = function(self, x, y, adjacentObject, eventName, direction)

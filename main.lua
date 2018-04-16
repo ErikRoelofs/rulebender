@@ -53,6 +53,13 @@ CONST = {
   TILE_HEIGHT = 60
 }
 
+inverseDirection = function(direction)
+  if direction == "left" then return "right" end
+  if direction == "right" then return "left" end
+  if direction == "up" then return "down" end
+  if direction == "down" then return "up" end
+end
+
 function love.load()
   dispatcher = require("dispatcher")
   objectFactory = require("object")(dispatcher)

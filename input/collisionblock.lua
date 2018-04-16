@@ -1,8 +1,8 @@
-return function(objectFactory, collisionType)
+return function(objectFactory, collisionType, directions)
   local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
-    :thatIsAnInput()
+    :thatIsAnInput(directions)
     :thatCanBeDrawn(function(self)
      
       love.graphics.print("collide", 5, 20) 

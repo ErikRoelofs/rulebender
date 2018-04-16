@@ -1,9 +1,9 @@
-return function(objectFactory, dispatcher, effect, draweffect)
+return function(objectFactory, dispatcher, effect, draweffect, directions)
     
   local block = objectFactory()
     :thatIsSolid()
     :thatCanBePushed()
-    :thatIsATrigger()
+    :thatIsATrigger(directions)
     :thatCanBeDrawn(function(self)     
       self:draweffect()
       self:drawActiveMark()
@@ -23,12 +23,22 @@ return function(objectFactory, dispatcher, effect, draweffect)
     end
   end)
   
-  dispatcher:listen("room.objectsNowAdjacent", function(event)
-    if event.objectA == block then
-      block:respondTo(event.objectB)
+  dispatcher:listen("room.objectsNowAdjacent", function(event)    
+    if event.newObject == block then
+      if  event.existingObject:hasType("input") 
+      and event.existingObject.inputDirections[event.direction] 
+      and event.newObject.triggerDirections[inverseDirection(event.direction)]
+      then
+        block:respondTo(event.existingObject)
+      end
     end
-    if event.objectB == block then
-      block:respondTo(event.objectA)
+    if event.existingObject == block then
+      if  event.newObject:hasType("input") 
+      and event.newObject.inputDirections[inverseDirection(event.direction)] 
+      and event.existingObject.triggerDirections[event.direction]
+      then
+        block:respondTo(event.newObject)
+      end
     end
   end)
   

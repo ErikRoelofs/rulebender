@@ -1,6 +1,6 @@
 return function(objectFactory, dispatcher, triggerblockFactory)
   
-  function makeDirectionBlock(eventName, text)
+  function makeDirectionBlock(eventName, text, directions)
     return triggerblockFactory(objectFactory, dispatcher, function()
       local event = {
         name = eventName
@@ -8,13 +8,14 @@ return function(objectFactory, dispatcher, triggerblockFactory)
       dispatcher:dispatch(event)
     end, function() 
       love.graphics.print(text, 3, 20)
-    end)
+    end,
+    directions)
   end
 
   return {
-    left = function() return makeDirectionBlock("bot.left", "go left") end,
-    right = function() return makeDirectionBlock("bot.right", "go right") end,
-    up = function() return makeDirectionBlock("bot.up", "go up") end,
-    down = function() return makeDirectionBlock("bot.down", "go down") end
+    left = function(directions) return makeDirectionBlock("bot.left", "go left", directions) end,
+    right = function(directions) return makeDirectionBlock("bot.right", "go right", directions) end,
+    up = function(directions) return makeDirectionBlock("bot.up", "go up", directions) end,
+    down = function(directions) return makeDirectionBlock("bot.down", "go down", directions) end
   }
 end

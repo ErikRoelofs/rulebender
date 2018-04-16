@@ -11,19 +11,19 @@ return function(objectFactory, dispatcher)
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
       input = {
         key = function(key, directions) return keyblockFactory(objectFactory, key, directions) end,
-        collision = function(objectType) return collisionblockFactory(objectFactory, objectType) end,
-        pulser = function(timer) return pulserFactory(objectFactory, timer) end,
-        motion = function(timer) return motionFactory(objectFactory, timer) end,
+        collision = function(objectType, directions) return collisionblockFactory(objectFactory, objectType, directions) end,
+        pulser = function(timer, directions) return pulserFactory(objectFactory, timer, directions) end,
+        motion = function(timer, directions) return motionFactory(objectFactory, timer, directions) end,
       },
       trigger = {
         move = {
-          left = function() return directionblocksFactory.left() end,
-          right = function() return directionblocksFactory.right() end,
-          down = function() return directionblocksFactory.down() end,
-          up = function() return directionblocksFactory.up() end,
+          left = function(directions) return directionblocksFactory.left(directions) end,
+          right = function(directions) return directionblocksFactory.right(directions) end,
+          down = function(directions) return directionblocksFactory.down(directions) end,
+          up = function(directions) return directionblocksFactory.up(directions) end,
         },
-        door = function(identifier) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier) end,
-        death = function() return triggerblockFactory(objectFactory, dispatcher, function(event) dispatcher:dispatch({name="bot.death"}) end, function(self) love.graphics.print("DEATH", 4, 20) end) end
+        door = function(identifier, directions) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier, directions) end,
+        death = function(directions) return triggerblockFactory(objectFactory, dispatcher, function(event) dispatcher:dispatch({name="bot.death"}) end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end
       },
       entities = {
         bot = function() return require("entity/bot")(objectFactory) end,
