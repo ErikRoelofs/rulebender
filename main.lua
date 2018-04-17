@@ -24,15 +24,15 @@ if debug then require("mobdebug").start() end
     / collision
     v time
     - fromTrigger?
-    - motion
+    v motion
     - destruction
     
   triggers:
     - object movement
     - damage/death
-    - pushing
+    v pushing
     - open/close
-    - win
+    v win
     - on/off
     - shoot/attack
     - grab/drop
@@ -41,7 +41,7 @@ if debug then require("mobdebug").start() end
     
   combined:
     - counters
-    - delays
+    v delays
     v signal pass-through
     - signal teleport
 
@@ -49,7 +49,7 @@ if debug then require("mobdebug").start() end
 
 --[[
     refactor: object factory should be built from parts
-    refactor: markings should look different (apply glow to whole tile?)
+    refactor: events or other objects for motion, instead of arg passing
 ]]
 
 -- global constants

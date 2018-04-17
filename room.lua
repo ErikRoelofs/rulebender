@@ -27,12 +27,12 @@ return function (dispatcher, width, height)
     return self:placeMovingObject(x, y, object)
   end
   
-  room.placeMovingObject = function(self, x, y, object, direction, speed)
+  room.placeMovingObject = function(self, x, y, object, direction, speed, dashing)
     assert( self:withinBounds(x,y), "Cannot place object; out of bounds." )
     
     local added
     if direction then
-      added = self.tiles[x][y]:addMovingObject(object, direction, speed)
+      added = self.tiles[x][y]:addMovingObject(object, direction, speed, dashing)
     else
       added = self.tiles[x][y]:addObject(object)
     end
@@ -49,10 +49,10 @@ return function (dispatcher, width, height)
   
   dispatcher:listen("move", function(event)
     if room.objects[event.object] then
-      room:moveObject(event.object, event.direction, event.speed)
+      room:moveObject(event.object, event.direction, event.speed, event.dashing, dashing)
     end
   end)
-  
+ 
   dispatcher:listen("push", function(event)
     if room.objects[event.object] then
       local x, y = room:_findObjectLocation(event.object)
@@ -109,16 +109,16 @@ return function (dispatcher, width, height)
     self:dispatchToAdjacentSquares(x, y, object, "room.objectsNoLongerAdjacent")
   end
   
-  room.moveObject = function (self, object, direction, speed)
+  room.moveObject = function (self, object, direction, speed, dashing)
     local x, y = room:_findObjectLocation(object)
     x, y = morphCoordinates(direction, x, y)
-    self:tryMoveTo(x,y,object, direction, speed)
+    self:tryMoveTo(x,y,object, direction, speed, dashing)
   end
   
-  room.tryMoveTo = function(self, x, y, object, direction, speed)
+  room.tryMoveTo = function(self, x, y, object, direction, speed, dashing)
       if self:canMoveTo(x, y, object, direction, speed) then
         self:removeObject(object)
-        self:placeMovingObject(x, y, object, direction, speed)
+        self:placeMovingObject(x, y, object, direction, speed, dashing)
       else
         local blocking = self:getBlockingObject(x, y, object)
         if blocking then

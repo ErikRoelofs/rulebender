@@ -1,6 +1,6 @@
 return function(dispatcher, library)
   
-  local room = require("room")(dispatcher, 4,8)
+  local room = require("room")(dispatcher, 4,12)
 
   room:placeObject(3, 3, library.input.key("a", { up = true, left = true }))
   --room:placeObject(3, 3, library.input.pulser(1.0))
@@ -23,7 +23,7 @@ return function(dispatcher, library)
   room:placeObject(1, 0, library.trigger.death({up = true, down = true}))
   room:placeObject(0, 1, library.trigger.move.down())
 
-  room:placeObject(3, 7, library.entities.bot())
+  room:placeObject(3, 11, library.entities.bot())
   room:placeObject(0, 6, library.entities.wall())
   room:placeObject(0, 7, library.entities.door("someId"))
 

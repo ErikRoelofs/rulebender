@@ -2,7 +2,8 @@ return function(dispatcher)
   local tile = {
     content = {},
     dispatcher = dispatcher,
-    movingObjects = {}
+    movingObjects = {},
+    dashingObjects = {}
   }
   
   tile.canAddObject = function(self, objectToPlace)
@@ -62,12 +63,14 @@ return function(dispatcher)
     return true
   end
   
-  tile.addMovingObject = function(self, object, direction, speed)
+  tile.addMovingObject = function(self, object, direction, speed, dashing)
     if tile:addObject(object) then
-      self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction}
+      self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction, speed = speed}
+      if dashing then self.dashingObjects[object] = true end
       local event = {
         name = "object.moving",
-        object = obj
+        object = obj,
+        dashing = dashing
       }
       tile.dispatcher:dispatch(event)
       return true
@@ -124,12 +127,25 @@ return function(dispatcher)
       end
     end
     for _, obj in ipairs(remove) do
+      local direction = tile.movingObjects[obj].direction
+      local speed = tile.movingObjects[obj].speed
       tile.movingObjects[obj] = nil
       local event = {
         name = "object.arrived",
         object = obj        
-      }
+      }      
       tile.dispatcher:dispatch(event)
+      if tile.dashingObjects[obj] then
+        tile.dashingObjects[obj] = nil
+        local moveEvent = {
+          name = "move",
+          object = obj,
+          direction = direction,
+          speed = speed,
+          dashing = true
+        }
+        tile.dispatcher:dispatch(moveEvent)
+      end
     end
   end)
   
