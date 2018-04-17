@@ -83,10 +83,12 @@ return function(dispatcher)
       if self.isInput or self.isTrigger then
         
         self.object.active = 0
-        self.object.maxActive = 0.5
+        self.object.maxActive = 0.8
         
-        self.object.activate = function(self)
+        self.object.activate = function(self, input, trigger)
           self.active = self.maxActive
+          self.triggerActive = trigger
+          self.inputActive = input
           local dereg
           dereg = self.dispatcher:listen("time.passes", function(event)
             self.active = self.active - math.min(event.value, self.active)
@@ -101,27 +103,28 @@ return function(dispatcher)
         end
         
         self.object.getActiveColor = function(self)
+          local green, blue = 0, 0
+          if self.inputActive then green = 0.5 end
+          if self.triggerActive then blue = 0.5 end
           return {
-            self.color[1],
-            self.color[2],
-            self.color[3],
-            self.active / self.maxActive
+            0,
+            green,
+            blue,
+            self.active / (self.maxActive*3)
           }
         end
         
         self.object.drawActiveMark = function(self)
           if self:isActive() then
             love.graphics.setColor(self:getActiveColor())
-            love.graphics.circle("fill", 5,5,5)
+            love.graphics.rectangle("fill", 0, 0, CONST.TILE_WIDTH, CONST.TILE_HEIGHT)
             love.graphics.setColor(1,1,1,1)
           end
         end        
         
       end
       
-      if self.isInput then
-        self.object.color = {0,1,0}
-        
+      if self.isInput then        
         local oldDraw = self.object.draw
         self.object.draw = function(self)
           love.graphics.setColor(0.3,0.3,0.3,1)
@@ -182,14 +185,12 @@ return function(dispatcher)
               self.dispatcher:dispatch(newEvent)
             end
           end
-          self:activate()
+          self:activate(true, false)
         end
         
       end
       
       if self.isTrigger then
-        self.object.color = {0,0,1}
-        
         local oldDraw = self.object.draw
         self.object.draw = function(self)
           love.graphics.setColor(0.3,0.3,0.8,1)

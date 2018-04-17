@@ -49,7 +49,7 @@ if debug then require("mobdebug").start() end
 
 --[[
     refactor: object factory should be built from parts
-    refactor: add a "delayed pulse" option to input
+    refactor: markings should look different (apply glow to whole tile?)
 ]]
 
 -- global constants
