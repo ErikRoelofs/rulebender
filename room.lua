@@ -55,10 +55,24 @@ return function (dispatcher, width, height)
     if room.objects[event.object] then
       local x, y = room:_findObjectLocation(event.object)
       if event.direction == "down" then
-        room.tiles[x][y+1]:pushContents(event.direction, event.speed)
+        room:_pushIntoTile(x,y+1,event.direction, event.speed)
+      end
+      if event.direction == "up" then
+        room:_pushIntoTile(x,y-1,event.direction, event.speed)
+      end
+      if event.direction == "left" then
+        room:_pushIntoTile(x-1,y,event.direction, event.speed)
+      end
+      if event.direction == "right" then
+        room:_pushIntoTile(x+1,y,event.direction, event.speed)
       end
     end
   end)
+
+  room._pushIntoTile = function (self, x,y,direction, speed)
+    if not self:withinBounds(x,y) then return end
+    room.tiles[x][y]:pushContents(direction, speed)
+  end
   
   dispatcher:listen("object.replace", function(event)
     if room.objects[event.existingObject] then      
@@ -109,17 +123,20 @@ return function (dispatcher, width, height)
       end
   end
   
-  room.getBlockingObject = function(self, x, y, object)
+  room.withinBounds = function(self, x,y)
     if x < 0 or x >= self.width or y < 0 or y >= self.height then
-      return nil
+      return false
     end
+    return true
+  end
+  
+  room.getBlockingObject = function(self, x, y, object)
+    if not self:withinBounds(x,y) then return end
     return self.tiles[x][y]:findBlockingObject(object)
   end
   
   room.canMoveTo = function(self, x, y, object, direction, speed)
-    if x < 0 or x >= self.width or y < 0 or y >= self.height then
-      return false
-    end
+    if not self:withinBounds(x,y) then return false end
     return self.tiles[x][y]:canAddMovingObject(object, direction, speed)
   end
   
