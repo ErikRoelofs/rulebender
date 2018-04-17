@@ -7,7 +7,8 @@ return function (dispatcher, width, height)
     height = height,
     tiles = {},
     objects = {},
-    dispatcher = dispatcher
+    dispatcher = dispatcher,
+    activated = {}
   }
   
   local i, j = 0, 0
@@ -68,10 +69,41 @@ return function (dispatcher, width, height)
       end
     end
   end)
-
+  
   room._pushIntoTile = function (self, x,y,direction, speed)
     if not self:withinBounds(x,y) then return end
     room.tiles[x][y]:pushContents(direction, speed)
+  end
+    
+  dispatcher:listen("signal", function(event)
+    if room.objects[event.object] then
+      room:applySignal(event.object, event.direction)
+    end
+  end)
+
+  room.applySignal = function(self, object, direction)
+    if room.objects[object] then
+      local x, y = room:_findObjectLocation(object)
+      if direction == "down" then
+        room:_applySignalInDirection(x,y+1,direction)
+      end
+      if direction == "up" then
+        room:_applySignalInDirection(x,y-1,direction)      
+      end
+      if direction == "left" then
+        room:_applySignalInDirection(x-1,y,direction)        
+      end
+      if direction == "right" then
+        room:_applySignalInDirection(x+1,y,direction)
+      end
+    end
+  end
+  
+  room._applySignalInDirection = function(self, x, y, direction)
+    if not self:withinBounds(x,y) then return end
+    if room.activated[room.tiles[x][y]] then return end
+    room.activated[room.tiles[x][y]] = true
+    room.tiles[x][y]:signalContents(direction)
   end
   
   dispatcher:listen("object.replace", function(event)
@@ -83,6 +115,10 @@ return function (dispatcher, width, height)
         room:placeObject(x,y,event.existingObject)
       end
     end
+  end)
+  
+  dispatcher:listen("time.passes", function(event)
+    room.activated = {}
   end)
   
   room.removeObject = function(self, object)

@@ -160,11 +160,14 @@ return function(dispatcher)
         end
         
         self.object.pulse = function(self)
-          newEvent = {
-            name = "inputblock.pulse",
-            value = self
-          }
-          self.dispatcher:dispatch(newEvent)
+          for direction in pairs(self.inputDirections) do
+            newEvent = {
+              name = "signal",
+              object = self,
+              direction = direction
+            }
+            self.dispatcher:dispatch(newEvent)            
+          end
           self:activate()
         end
         

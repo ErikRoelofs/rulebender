@@ -36,6 +36,17 @@ return function(dispatcher)
       end
     end    
   end
+  
+  tile.signalContents = function(self, direction)
+    for _, existingObject in ipairs(self.content) do
+      local event = {
+        name = "object.triggered",
+        object = existingObject,
+        direction = direction
+      }
+      self.dispatcher:dispatch(event)
+    end
+  end
 
   tile.findBlockingObject = function(self, object)
     for _, obj in ipairs(self.content) do

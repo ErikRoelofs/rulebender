@@ -48,9 +48,7 @@ if debug then require("mobdebug").start() end
 ]]
 
 --[[
-  refactor: input should propagate signal only in right directions
-    ( removes weird direction checking code; eliminates need for trigger to monitor adjacency )
-  
+    refactor: object factory should be built from parts
 ]]
 
 -- global constants
