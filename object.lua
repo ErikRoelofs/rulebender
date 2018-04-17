@@ -39,7 +39,7 @@ return function(dispatcher)
       if directions then
         self.object.triggerDirections = directions
       else
-        self.object.triggerDirections = { left = true, right = true, up = true, down = true }
+        self.object.triggerDirections = CONST.DIRECTIONS()
       end
       self.object.types.trigger = true
       return self
@@ -50,7 +50,7 @@ return function(dispatcher)
       if directions then
         self.object.inputDirections = directions
       else
-        self.object.inputDirections = { left = true, right = true, up = true, down = true }
+        self.object.inputDirections = CONST.DIRECTIONS()
       end
       self.object.types.input = true
       return self

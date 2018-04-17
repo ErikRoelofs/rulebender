@@ -8,7 +8,8 @@ return function (dispatcher, width, height)
     tiles = {},
     objects = {},
     dispatcher = dispatcher,
-    activated = {}
+    activated = {},
+    directions = CONST.DIRECTIONS()
   }
   
   local i, j = 0, 0
@@ -55,22 +56,12 @@ return function (dispatcher, width, height)
   dispatcher:listen("push", function(event)
     if room.objects[event.object] then
       local x, y = room:_findObjectLocation(event.object)
-      if event.direction == "down" then
-        room:_pushIntoTile(x,y+1,event.direction, event.speed)
-      end
-      if event.direction == "up" then
-        room:_pushIntoTile(x,y-1,event.direction, event.speed)
-      end
-      if event.direction == "left" then
-        room:_pushIntoTile(x-1,y,event.direction, event.speed)
-      end
-      if event.direction == "right" then
-        room:_pushIntoTile(x+1,y,event.direction, event.speed)
-      end
+      x, y = morphCoordinates(event.direction, x, y)
+      room:_pushIntoTile(x,y,event.direction, event.speed)      
     end
   end)
   
-  room._pushIntoTile = function (self, x,y,direction, speed)
+  room._pushIntoTile = function (self, x, y, direction, speed)
     if not self:withinBounds(x,y) then return end
     room.tiles[x][y]:pushContents(direction, speed)
   end
@@ -84,18 +75,8 @@ return function (dispatcher, width, height)
   room.applySignal = function(self, object, direction)
     if room.objects[object] then
       local x, y = room:_findObjectLocation(object)
-      if direction == "down" then
-        room:_applySignalInDirection(x,y+1,direction)
-      end
-      if direction == "up" then
-        room:_applySignalInDirection(x,y-1,direction)      
-      end
-      if direction == "left" then
-        room:_applySignalInDirection(x-1,y,direction)        
-      end
-      if direction == "right" then
-        room:_applySignalInDirection(x+1,y,direction)
-      end
+      x, y = morphCoordinates(direction, x, y)
+      room:_applySignalInDirection(x,y,direction)    
     end
   end
   
@@ -129,17 +110,9 @@ return function (dispatcher, width, height)
   end
   
   room.moveObject = function (self, object, direction, speed)
-    local x,y = self:_findObjectLocation(object)
-    
-    if direction == "right" then
-      self:tryMoveTo(x+1,y,object, direction, speed)
-    elseif direction == "left" then
-      self:tryMoveTo(x-1,y,object, direction, speed)
-    elseif direction == "up" then
-      self:tryMoveTo(x,y-1,object, direction, speed)
-    elseif direction == "down" then
-      self:tryMoveTo(x,y+1,object, direction, speed)
-    end
+    local x, y = room:_findObjectLocation(object)
+    x, y = morphCoordinates(direction, x, y)
+    self:tryMoveTo(x,y,object, direction, speed)
   end
   
   room.tryMoveTo = function(self, x, y, object, direction, speed)
@@ -177,10 +150,10 @@ return function (dispatcher, width, height)
   end
   
   room.dispatchToAdjacentSquares = function(self, x, y, object, name)
-    self:dispatchAdjacencyEvent(x-1, y, object, name, "right")
-    self:dispatchAdjacencyEvent(x+1, y, object, name, "left")
-    self:dispatchAdjacencyEvent(x, y-1, object, name, "down")
-    self:dispatchAdjacencyEvent(x, y+1, object, name, "up")
+    for direction in pairs(self.directions) do
+      local nX, nY = morphCoordinates(direction, x, y)
+      self:dispatchAdjacencyEvent(nX, nY, object, name, direction)
+    end
   end
   
   room.dispatchAdjacencyEvent = function(self, x, y, adjacentObject, eventName, direction)

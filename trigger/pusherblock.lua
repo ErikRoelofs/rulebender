@@ -1,6 +1,6 @@
 return function(triggerblockFactory, objectFactory, dispatcher, signalDirections, pushDirections)
   if not pushDirections then
-    pushDirections = {up = true, down = true, left = true, right = true}
+    pushDirections = CONST.DIRECTIONS()
   end
   return triggerblockFactory(objectFactory, dispatcher, 
     function(self) return function()

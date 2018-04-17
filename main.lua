@@ -54,7 +54,8 @@ if debug then require("mobdebug").start() end
 -- global constants
 CONST = {
   TILE_WIDTH = 60,
-  TILE_HEIGHT = 60
+  TILE_HEIGHT = 60,
+  DIRECTIONS = function() return { left = true, right = true, up = true, down = true } end
 }
 
 inverseDirection = function(direction)
@@ -62,6 +63,15 @@ inverseDirection = function(direction)
   if direction == "right" then return "left" end
   if direction == "up" then return "down" end
   if direction == "down" then return "up" end
+  error("Called without a proper direction!")
+end
+
+morphCoordinates = function(direction, x, y)
+  if direction == "left" then return x - 1, y end
+  if direction == "right" then return x + 1, y end
+  if direction == "up" then return x, y - 1 end
+  if direction == "down" then return x, y + 1 end
+  error("Called without a proper direction!")
 end
 
 function love.load()
