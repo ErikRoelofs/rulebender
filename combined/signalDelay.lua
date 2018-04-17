@@ -12,7 +12,7 @@ return function(objectFactory, inputDirections, triggerDirections, delay)
   
     dispatcher:listen("object.triggered", function(event)
     if event.object == block and block.triggerDirections[inverseDirection(event.direction)] then
-      block:delayedPulse(delay)
+      block:delayedPulse(delay, inverseDirection(event.direction))
       block:activate()
     end
   end)

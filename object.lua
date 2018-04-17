@@ -159,26 +159,28 @@ return function(dispatcher)
 
         end
         
-        self.object.delayedPulse = function(self, delay)
+        self.object.delayedPulse = function(self, delay, omitDirection)
           self.activationTime = delay
           local dereg 
           dereg = self.dispatcher:listen("time.passes", function(event)
             self.activationTime = self.activationTime - event.value
             if self.activationTime <= 0 then
               dereg()
-              self:pulse()
+              self:pulse(omitDirection)
             end
           end)
         end
         
-        self.object.pulse = function(self)
+        self.object.pulse = function(self, omitDirection)
           for direction in pairs(self.inputDirections) do
-            newEvent = {
-              name = "signal",
-              object = self,
-              direction = direction
-            }
-            self.dispatcher:dispatch(newEvent)            
+            if direction ~= omitDirection then
+              newEvent = {
+                name = "signal",
+                object = self,
+                direction = direction
+              }
+              self.dispatcher:dispatch(newEvent)
+            end
           end
           self:activate()
         end
