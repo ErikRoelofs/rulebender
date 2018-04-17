@@ -1,14 +1,16 @@
-return function(triggerblockFactory, objectFactory, dispatcher, directions)
+return function(triggerblockFactory, objectFactory, dispatcher, signalDirections, pushDirections)
+  if not pushDirections then
+    pushDirections = {up = true, down = true, left = true, right = true}
+  end
   return triggerblockFactory(objectFactory, dispatcher, 
     function(self) return function()
-      dispatcher:dispatch({name = "push", direction = "down", speed = 2, object = self})
-      dispatcher:dispatch({name = "push", direction = "left", speed = 2, object = self})
-      dispatcher:dispatch({name = "push", direction = "right", speed = 2, object = self})
-      dispatcher:dispatch({name = "push", direction = "up", speed = 2, object = self})
+      for direction in pairs(pushDirections) do
+        dispatcher:dispatch({name = "push", direction = direction, speed = 2, object = self})
+      end
     end end,
     function()
       love.graphics.print("pusher", 4, 20)
     end,
-    directions
+    signalDirections
   )
 end

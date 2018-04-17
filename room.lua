@@ -148,7 +148,7 @@ return function (dispatcher, width, height)
   end
   
   room.dispatchAdjacencyEvent = function(self, x, y, adjacentObject, eventName, direction)
-    if not self:withinBounds() then return end
+    if not self:withinBounds(x,y) then return end
     for _, object in ipairs(self.tiles[x][y]:getContents()) do      
       local event = {
         name = eventName,

@@ -25,7 +25,7 @@ return function(objectFactory, dispatcher)
         },
         door = function(identifier, directions) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier, directions) end,
         death = function(directions) return triggerblockFactory(objectFactory, dispatcher, function(self) return function(event) dispatcher:dispatch({name="bot.death"}) end end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end,
-        pusher = function(directions) return pusherblockFactory(triggerblockFactory, objectFactory, dispatcher, directions) end,
+        pusher = function(directions, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, dispatcher, directions, pushDirections) end,
       },
       entities = {
         bot = function() return require("entity/bot")(objectFactory) end,
