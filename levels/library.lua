@@ -8,6 +8,7 @@ return function(objectFactory, dispatcher)
   local doorFactory = require("trigger/door")
   local pusherblockFactory = require("trigger/pusherblock")
   local signalPasserFactory = require("combined/signalPasser")
+  local signalDelayFactory = require("combined/signalDelay")
   
   return {
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
@@ -29,7 +30,8 @@ return function(objectFactory, dispatcher)
         pusher = function(directions, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, dispatcher, directions, pushDirections) end,
       },
       combined = {
-        wire = function(inputDirections, triggerDirections) return signalPasserFactory(objectFactory, inputDirections, triggerDirections) end
+        wire = function(inputDirections, triggerDirections) return signalPasserFactory(objectFactory, inputDirections, triggerDirections) end,
+        delay = function(inputDirections, triggerDirections, delay) return signalDelayFactory(objectFactory, inputDirections, triggerDirections, delay) end,
       },
       entities = {
         bot = function() return require("entity/bot")(objectFactory) end,

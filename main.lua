@@ -42,13 +42,14 @@ if debug then require("mobdebug").start() end
   combined:
     - counters
     - delays
-    - signal pass-through
+    v signal pass-through
     - signal teleport
 
 ]]
 
 --[[
     refactor: object factory should be built from parts
+    refactor: add a "delayed pulse" option to input
 ]]
 
 -- global constants

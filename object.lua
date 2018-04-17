@@ -159,6 +159,18 @@ return function(dispatcher)
 
         end
         
+        self.object.delayedPulse = function(self, delay)
+          self.activationTime = delay
+          local dereg 
+          dereg = self.dispatcher:listen("time.passes", function(event)
+            self.activationTime = self.activationTime - event.value
+            if self.activationTime <= 0 then
+              dereg()
+              self:pulse()
+            end
+          end)
+        end
+        
         self.object.pulse = function(self)
           for direction in pairs(self.inputDirections) do
             newEvent = {

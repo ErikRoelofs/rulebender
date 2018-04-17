@@ -30,8 +30,10 @@ dispatcher.deregister = function(self, name, callback)
   for key, registeredCallback in ipairs(self.listeners[name]) do
     if callback == registeredCallback then
       table.remove(self.listeners[name], key)
+      return
     end
   end
+  error("Cannot deregister, function not recognized?")
 end
 
 dispatcher.flush = function(self)
