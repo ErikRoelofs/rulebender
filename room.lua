@@ -26,7 +26,7 @@ return function (dispatcher, width, height)
   end
   
   room.placeMovingObject = function(self, x, y, object, direction, speed)
-    assert( x < self.width and y < self.height and x >= 0 and y >= 0, "Cannot place object; out of bounds." )
+    assert( self:withinBounds(x,y), "Cannot place object; out of bounds." )
     
     local added
     if direction then
@@ -148,7 +148,7 @@ return function (dispatcher, width, height)
   end
   
   room.dispatchAdjacencyEvent = function(self, x, y, adjacentObject, eventName, direction)
-    if x < 0 or x >= self.width or y < 0 or y >= self.height then return end
+    if not self:withinBounds() then return end
     for _, object in ipairs(self.tiles[x][y]:getContents()) do      
       local event = {
         name = eventName,
