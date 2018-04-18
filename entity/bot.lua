@@ -17,8 +17,7 @@ return function(objectFactory)
       name = "move",
       object = bot,
       direction = direction,
-      speed = 2,
-      dashing = true
+      speed = 2
     }
     return function()
       if bot.moving then return end

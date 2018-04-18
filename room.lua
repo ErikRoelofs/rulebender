@@ -47,9 +47,19 @@ return function (dispatcher, width, height)
     return self.objects[object].x, self.objects[object].y
   end
   
+  dispatcher:listen("create.adjacent.moving", function(event)
+    if room.objects[event.existingObject] then
+      local x, y = room:_findObjectLocation(event.existingObject)
+      x, y = morphCoordinates(event.direction, x, y)
+      if room:placeMovingObject(x,y, event.newObject, event.direction, event.speed, event.dashing) then
+        
+      end
+    end
+  end)
+  
   dispatcher:listen("move", function(event)
     if room.objects[event.object] then
-      room:moveObject(event.object, event.direction, event.speed, event.dashing, dashing)
+      room:moveObject(event.object, event.direction, event.speed, event.dashing)
     end
   end)
  
