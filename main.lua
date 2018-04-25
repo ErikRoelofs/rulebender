@@ -59,6 +59,8 @@ CONST = {
   DIRECTIONS = function() return { left = true, right = true, up = true, down = true } end
 }
 
+paused = false
+
 inverseDirection = function(direction)
   if direction == "left" then return "right" end
   if direction == "right" then return "left" end
@@ -93,18 +95,20 @@ function love.load()
       end
     end)
   end)
-
+  
   dispatcher:listen("level.next", function(event)
     room = loader(2)
   end)
 end
 
 function love.update(dt)
-  local event = {
-    name = "time.passes",
-    value = dt
-  }
-  dispatcher:dispatch(event)
+  if not paused then
+    local event = {
+      name = "time.passes",
+      value = dt
+    }
+    dispatcher:dispatch(event)
+  end
 end
 
 function love.draw()
@@ -117,9 +121,26 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  local event = {
-      name = "keypressed",
-      key = key
-  }
-  dispatcher:dispatch(event)
+  if not paused then
+    local event = {
+        name = "keypressed",
+        key = key
+    }
+    dispatcher:dispatch(event)
+  end
+  if key == 'space' then
+    if paused then
+      local event = {
+        name = "game.unpaused"        
+      }
+      dispatcher:dispatch(event)
+      paused = false
+    else
+      local event = {
+        name = "game.paused"
+      }
+      dispatcher:dispatch(event)
+      paused = true
+    end
+  end
 end

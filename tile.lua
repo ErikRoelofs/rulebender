@@ -69,7 +69,7 @@ return function(dispatcher)
       if dashing then self.dashingObjects[object] = true end
       local event = {
         name = "object.moving",
-        object = obj,
+        object = object,
         dashing = dashing
       }
       tile.dispatcher:dispatch(event)
@@ -92,8 +92,9 @@ return function(dispatcher)
         self.translateForMovement(self.movingObjects[obj].time, self.movingObjects[obj].maxTime, self.movingObjects[obj].direction)
       end
       obj:draw()
-      love.graphics.pop()      
+      love.graphics.pop()
     end
+    love.graphics.print( #self.content, 5, 5 )
   end
   
   tile.translateForMovement = function(time, maxTime, direction)

@@ -5,6 +5,9 @@ return function(objectFactory)
     :thatCanBeDrawn(function(self)
       if not self.dead then
         love.graphics.print("bot!", 0, 20)
+        if self.moving then
+          love.graphics.print("M", 0, 30)
+        end
       else
         love.graphics.print("dead bot :(", 0, 20)
       end
@@ -39,11 +42,15 @@ return function(objectFactory)
   end))
   
   table.insert( deregAll, bot.dispatcher:listen("object.moving", function(event)
-    bot.moving = true
+    if event.object == bot then
+      bot.moving = true
+    end
   end))
   
   table.insert( deregAll, bot.dispatcher:listen("object.arrived", function(event)
-    bot.moving = false
+    if event.object == bot then
+      bot.moving = false
+    end
   end))
 
   bot:addType("bot")
