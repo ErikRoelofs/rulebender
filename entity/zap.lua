@@ -16,13 +16,13 @@ return function(objectFactory, direction)
         direction = direction,
         impactSignal = true
       }
-      zap.dispatcher:dispatch(event)
+      zap.dispatcher:dispatchDelayed(event, 0.5)
       
       local removeEvent = {
         name = "object.remove",
         object = zap
       }
-      zap.dispatcher:dispatch(removeEvent)      
+      zap.dispatcher:dispatchDelayed(removeEvent, 0.5)
     end
   end)
   

@@ -9,7 +9,7 @@ return function(dispatcher, library)
   room:placeObject(3, 4, library.trigger.door("someId"))
   
   room:placeObject(2, 3, library.input.motion(0.6))
-  room:placeObject(2, 5, library.trigger.zapper({up = true, down = true}, {down = true}))
+  room:placeObject(2, 5, library.trigger.zapper({up = true, down = true}, {down = true, left = true, right = true }))
   room:placeObject(2, 2, library.combined.delay(nil, nil, 0.3))
   room:placeObject(1, 3, library.combined.wire(nil, nil, 0.3))
   room:placeObject(2, 8, library.trigger.move.up())

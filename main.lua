@@ -53,10 +53,16 @@ if debug then require("mobdebug").start() end
     refactor: events or other objects for motion, instead of arg passing
 ]]
 
+--[[ game parts needed
+  - level selection / menu
+  - graphics & decoration
+  - images / animations 
+]]
+
 -- global constants
 CONST = {
-  TILE_WIDTH = 60,
-  TILE_HEIGHT = 60,
+  TILE_WIDTH = 75,
+  TILE_HEIGHT = 75,
   DIRECTIONS = function() return { left = true, right = true, up = true, down = true } end
 }
 

@@ -1,5 +1,6 @@
 local dispatcher = {
-  listeners = {}
+  listeners = {},
+  queue = {}
 }
 
 local dispatchTo = function(name, listeners, event)
@@ -11,8 +12,19 @@ local dispatchTo = function(name, listeners, event)
 end
 
 dispatcher.dispatch = function(self, event)
+  if event.name == "time.passes" then
+    self:handleTimePassing(event)
+  end
+  
   dispatchTo('*', self.listeners, event)
   dispatchTo(event.name, self.listeners, event)
+end
+
+dispatcher.dispatchDelayed = function(self, event, delay)
+  if event.name == "time.passes" then
+    error("Time waits for nobody.")
+  end
+  table.insert(self.queue, {delay = delay, event = event})
 end
 
 dispatcher.listen = function(self, name, callback)
@@ -24,6 +36,23 @@ dispatcher.listen = function(self, name, callback)
     dispatcher:deregister(name, callback)
   end
 end
+
+dispatcher.handleTimePassing = function(self, event)
+  for key, queued in ipairs(self.queue) do
+    queued.delay = queued.delay - event.value
+    if queued.delay <= 0 then
+      self:dispatch(queued.event)      
+    end
+  end
+  
+  local i = #self.queue
+  while i > 0 do
+    if self.queue[i].delay <= 0 then
+      table.remove(self.queue)
+    end
+    i = i - 1
+  end
+end 
 
 dispatcher.deregister = function(self, name, callback)
   if not self.listeners[name] then return end
