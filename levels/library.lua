@@ -8,6 +8,7 @@ return function(objectFactory, dispatcher)
   local doorFactory = require("trigger/door")
   local pusherblockFactory = require("trigger/pusherblock")
   local launcherFactory = require("trigger/launcher")
+  local zapperFactory = require("trigger/zapper")
   local signalPasserFactory = require("combined/signalPasser")
   local signalDelayFactory = require("combined/signalDelay")
   
@@ -30,6 +31,7 @@ return function(objectFactory, dispatcher)
         death = function(directions) return triggerblockFactory(objectFactory, dispatcher, function(self) return function(event) dispatcher:dispatch({name="bot.death"}) end end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end,
         pusher = function(directions, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, dispatcher, directions, pushDirections) end,
         launcher = function(directions, launchDirections) return launcherFactory(triggerblockFactory, objectFactory, dispatcher, directions, launchDirections) end,
+        zapper = function(directions, zapDirections) return zapperFactory(triggerblockFactory, objectFactory, dispatcher, directions, zapDirections) end,
       },
       combined = {
         wire = function(inputDirections, triggerDirections) return signalPasserFactory(objectFactory, inputDirections, triggerDirections) end,

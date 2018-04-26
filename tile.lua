@@ -60,6 +60,16 @@ return function(dispatcher)
   tile.addObject = function(self, object)
     if not self:canAddObject(object) then return end
     table.insert(self.content, object)
+    for _, existingObject in ipairs(self.content) do
+      if object ~= existingObject then
+        local event = {
+          name = "object.collision",
+          existingObject = existingObject,
+          newObject = object
+        }
+        dispatcher:dispatch(event)
+      end
+    end
     return true
   end
   
@@ -81,8 +91,10 @@ return function(dispatcher)
     for key, obj in ipairs(self.content) do
       if obj == object then
         table.remove(self.content, key)
+        return
       end
     end
+    error "object not in tile?"
   end
   
   tile.draw = function(self)

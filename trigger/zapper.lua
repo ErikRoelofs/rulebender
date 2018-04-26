@@ -1,11 +1,11 @@
-return function(triggerblockFactory, objectFactory, dispatcher, triggerDirections, launchDirections)
+return function(triggerblockFactory, objectFactory, dispatcher, triggerDirections, zapDirections)
   return triggerblockFactory(objectFactory, dispatcher, 
     function(self) return function()
-      for direction in pairs(launchDirections) do
+      for direction in pairs(zapDirections) do
         local event = {
           name = "create.adjacent.moving",
           existingObject = self,
-          newObject = require("entity/crate")(objectFactory),
+          newObject = require("entity/zap")(objectFactory, direction),
           direction = direction,
           speed = 1,
           dashing = true
@@ -14,7 +14,7 @@ return function(triggerblockFactory, objectFactory, dispatcher, triggerDirection
       end
     end end,
     function()
-      love.graphics.print("launcher", 4, 20)
+      love.graphics.print("zapper", 4, 20)
     end, 
     triggerDirections
   )

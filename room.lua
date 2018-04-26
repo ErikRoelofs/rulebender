@@ -31,14 +31,20 @@ return function (dispatcher, width, height)
     assert( self:withinBounds(x,y), "Cannot place object; out of bounds." )
     
     local added
+    local originalLocation = nil
+    if self.objects[object] then
+      originalLocation = self:_findObjectLocation(object)
+    end
+    self.objects[object] = {x = x, y = y}
     if direction then
       added = self.tiles[x][y]:addMovingObject(object, direction, speed, dashing)
     else
       added = self.tiles[x][y]:addObject(object)
     end
     if added then
-      self.objects[object] = {x = x, y = y}
       self:dispatchToAdjacentSquares(x, y, object, "room.objectsNowAdjacent")
+    else
+      self.objects[object] = originalLocation
     end
     return added
   end
@@ -51,9 +57,7 @@ return function (dispatcher, width, height)
     if room.objects[event.existingObject] then
       local x, y = room:_findObjectLocation(event.existingObject)
       x, y = morphCoordinates(event.direction, x, y)
-      if room:placeMovingObject(x,y, event.newObject, event.direction, event.speed, event.dashing) then
-        
-      end
+      room:placeMovingObject(x,y, event.newObject, event.direction, event.speed, event.dashing)
     end
   end)
   
@@ -78,14 +82,16 @@ return function (dispatcher, width, height)
     
   dispatcher:listen("signal", function(event)
     if room.objects[event.object] then
-      room:applySignal(event.object, event.direction)
+      room:applySignal(event.object, event.direction, event.impactSignal)
     end
   end)
 
-  room.applySignal = function(self, object, direction)
+  room.applySignal = function(self, object, direction, impactSignal)
     if room.objects[object] then
       local x, y = room:_findObjectLocation(object)
-      x, y = morphCoordinates(direction, x, y)
+      if not impactSignal then
+        x, y = morphCoordinates(direction, x, y)
+      end
       room:_applySignalInDirection(x,y,direction)    
     end
   end
@@ -108,21 +114,34 @@ return function (dispatcher, width, height)
     end
   end)
   
+  dispatcher:listen("object.remove", function(event)
+    if room.objects[event.object] then      
+      local x, y = room:_findObjectLocation(event.object)
+      room:removeObject(event.object)
+    else
+      local a = "wat"
+    end
+  end)
+
   dispatcher:listen("time.passes", function(event)
     room.activated = {}
   end)
   
   room.removeObject = function(self, object)
     local x, y = self:_findObjectLocation(object)
+    self:dispatchToAdjacentSquares(x, y, object, "room.objectsNoLongerAdjacent")
     self.tiles[x][y]:removeObject(object)
     self.objects[object] = nil
-    self:dispatchToAdjacentSquares(x, y, object, "room.objectsNoLongerAdjacent")
   end
   
   room.moveObject = function (self, object, direction, speed, dashing)
-    local x, y = room:_findObjectLocation(object)
-    x, y = morphCoordinates(direction, x, y)
-    self:tryMoveTo(x,y,object, direction, speed, dashing)
+    if self.objects[object] then
+      local x, y = room:_findObjectLocation(object)
+      x, y = morphCoordinates(direction, x, y)
+      self:tryMoveTo(x,y,object, direction, speed, dashing)
+    else
+      local a = "wat"
+    end
   end
   
   room.tryMoveTo = function(self, x, y, object, direction, speed, dashing)
