@@ -139,8 +139,6 @@ return function (dispatcher, width, height)
       local x, y = room:_findObjectLocation(object)
       x, y = morphCoordinates(direction, x, y)
       self:tryMoveTo(x,y,object, direction, speed, dashing)
-    else
-      local a = "wat"
     end
   end
   
@@ -157,6 +155,14 @@ return function (dispatcher, width, height)
             objectB = blocking
           }
           self.dispatcher:dispatch(event)
+          return
+        end
+        if not self:withinBounds(x,y) then
+          local event = {
+            name = "room.objectMapEdgeCollision",
+            object = object            
+          }
+          self.dispatcher:dispatch(event)          
         end
       end
   end

@@ -22,7 +22,17 @@ return function(objectFactory, direction)
         name = "object.remove",
         object = zap
       }
-      zap.dispatcher:dispatch(removeEvent)
+      zap.dispatcher:dispatch(removeEvent)      
+    end
+  end)
+  
+  zap.dispatcher:listen("room.objectMapEdgeCollision", function(event)
+    if event.object == zap then
+      local removeEvent = {
+        name = "object.remove",
+        object = zap
+      }
+      zap.dispatcher:dispatch(removeEvent)      
     end
   end)
   

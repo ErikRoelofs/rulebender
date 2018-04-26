@@ -38,7 +38,7 @@ if debug then require("mobdebug").start() end
     - grab/drop
     - rotate
     - manipulate state
-    - zapper
+    v zapper
     
   combined:
     - counters
