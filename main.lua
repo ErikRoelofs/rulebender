@@ -85,7 +85,7 @@ morphCoordinates = function(direction, x, y)
 end
 
 function love.load()
-  dispatcher = require("dispatcher")
+  dispatcher = require("dispatch/dispatcher")
   objectFactory = require("object")(dispatcher)
   eventLog = require("eventlog")(dispatcher)
   library = require("levels/library")(objectFactory, dispatcher)
