@@ -1,8 +1,7 @@
 local dispatcher = {
   timer = 0,
   listeners = {},
-  queue = {},
-  history = {}
+  queue = {}
 }
 
 local dispatchTo = function(name, listeners, event)
@@ -17,9 +16,6 @@ dispatcher.dispatch = function(self, event)
   if event.name == "time.passes" then
     self:_handleTimePassing(event)
     self:_doDispatch(event)
-  else
-    table.insert(self.history, { time = self.timer, event = event })
-    self:_doDispatch(event)
   end  
 end
 
@@ -28,11 +24,9 @@ dispatcher._doDispatch = function(self, event)
   dispatchTo(event.name, self.listeners, event)  
 end
 
+
 dispatcher.dispatchDelayed = function(self, event, delay)
-  if event.name == "time.passes" then
-    error("Time waits for nobody.")
-  end
-  table.insert(self.queue, {delay = delay, event = event})
+  
 end
 
 dispatcher.listen = function(self, name, callback)
@@ -44,7 +38,6 @@ dispatcher.listen = function(self, name, callback)
     dispatcher:deregister(name, callback)
   end
 end
-
 dispatcher._handleTimePassing = function(self, event)
   self.timer = self.timer + event.value
   for key, queued in ipairs(self.queue) do
@@ -78,8 +71,11 @@ dispatcher.flush = function(self)
   self.listeners = {}
 end
 
-dispatcher.getHistory = function(self)
-  return self.history
+
+dispatcher.receiveHistory = function(self, history)
+  for _, data in ipairs(history) do
+    table.insert(self.queue, { delay = data.time, event = data.event })
+  end
 end
 
 return dispatcher

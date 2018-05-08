@@ -85,12 +85,13 @@ morphCoordinates = function(direction, x, y)
 end
 
 function love.load()
-  dispatcher = require("dispatch/dispatcher")
+  
+  dispatcher = require("dispatch/facade")
   objectFactory = require("object")(dispatcher)
   eventLog = require("eventlog")(dispatcher)
   library = require("levels/library")(objectFactory, dispatcher)
     
-  local loader = require("levels/loader")(dispatcher, eventLog, library)
+  loader = require("levels/loader")(dispatcher, eventLog, library)
   room = loader(1)
   
   dispatcher:listen("level.completed", function(event)
@@ -149,5 +150,10 @@ function love.keypressed(key)
       dispatcher:dispatch(event)
       paused = true
     end
+  end
+  if key == 'r' then
+    dispatcher:startReplayMode()
+    oldRoom = room
+    room = loader(1)
   end
 end
