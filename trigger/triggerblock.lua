@@ -1,6 +1,6 @@
-return function(objectFactory, dispatcher, effect, draweffect, directions)
+return function(objectFactory, id, dispatcher, effect, draweffect, directions)
     
-  local block = objectFactory()
+  local block = objectFactory(id)
     :thatIsSolid()
     :thatCanBePushed()
     :thatIsATrigger(directions)

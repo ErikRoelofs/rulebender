@@ -1,7 +1,8 @@
 return function(dispatcher)
-  return function()
+  return function(id)
     local builder = {
       object = {
+        id = id,
         types = {
           object = true
         },
@@ -56,11 +57,6 @@ return function(dispatcher)
       return self
     end
         
-    builder.withIdentifier = function(self, identifier)
-      self.object.id = identifier
-      return self
-    end
-    
     builder.go = function(self)
       if self.draw then
         self.object.draw = self.draw

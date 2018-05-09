@@ -1,8 +1,8 @@
-return function(triggerblockFactory, objectFactory, dispatcher, signalDirections, pushDirections)
+return function(triggerblockFactory, objectFactory, id, dispatcher, signalDirections, pushDirections)
   if not pushDirections then
     pushDirections = CONST.DIRECTIONS()
   end
-  return triggerblockFactory(objectFactory, dispatcher, 
+  return triggerblockFactory(objectFactory, id, dispatcher, 
     function(self) return function()
       for direction in pairs(pushDirections) do
         dispatcher:dispatch({name = "push", direction = direction, speed = 2, object = self})

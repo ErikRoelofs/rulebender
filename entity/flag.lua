@@ -1,6 +1,6 @@
-return function(objectFactory)
+return function(objectFactory, id)
   
-  local flag = objectFactory()
+  local flag = objectFactory(id)
     :thatIsSolid()
     :thatCanBeDrawn(function(self)
       love.graphics.print("flag!", 0, 20)

@@ -15,33 +15,33 @@ return function(objectFactory, dispatcher)
   return {
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
       input = {
-        key = function(key, directions) return keyblockFactory(objectFactory, key, directions) end,
-        collision = function(objectType, directions) return collisionblockFactory(objectFactory, objectType, directions) end,
-        pulser = function(timer, directions) return pulserFactory(objectFactory, timer, directions) end,
-        motion = function(timer, directions) return motionFactory(objectFactory, timer, directions) end,
+        key = function(id, key, directions) return keyblockFactory(objectFactory, id, key, directions) end,
+        collision = function(id, objectType, directions) return collisionblockFactory(objectFactory, id, objectType, directions) end,
+        pulser = function(id, timer, directions) return pulserFactory(objectFactory, id, timer, directions) end,
+        motion = function(id, timer, directions) return motionFactory(objectFactory, id, timer, directions) end,
       },
       trigger = {
         move = {
-          left = function(directions) return directionblocksFactory.left(directions) end,
-          right = function(directions) return directionblocksFactory.right(directions) end,
-          down = function(directions) return directionblocksFactory.down(directions) end,
-          up = function(directions) return directionblocksFactory.up(directions) end,
+          left = function(id, directions) return directionblocksFactory.left(id, directions) end,
+          right = function(id, directions) return directionblocksFactory.right(id, directions) end,
+          down = function(id, directions) return directionblocksFactory.down(id, directions) end,
+          up = function(id, directions) return directionblocksFactory.up(id, directions) end,
         },
-        door = function(identifier, directions) return doorFactory(triggerblockFactory, objectFactory, dispatcher, identifier, directions) end,
-        death = function(directions) return triggerblockFactory(objectFactory, dispatcher, function(self) return function(event) dispatcher:dispatch({name="bot.death"}) end end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end,
-        pusher = function(directions, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, dispatcher, directions, pushDirections) end,
-        launcher = function(directions, launchDirections) return launcherFactory(triggerblockFactory, objectFactory, dispatcher, directions, launchDirections) end,
-        zapper = function(directions, zapDirections) return zapperFactory(triggerblockFactory, objectFactory, dispatcher, directions, zapDirections) end,
+        door = function(id, targetId, directions) return doorFactory(triggerblockFactory, objectFactory, dispatcher, id, targetId, directions) end,
+        death = function(id, directions) return triggerblockFactory(objectFactory, id, dispatcher, function(self) return function(event) dispatcher:dispatch({name="bot.death"}) end end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end,
+        pusher = function(directions, id, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, pushDirections) end,
+        launcher = function(id, directions, launchDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, launchDirections) end,
+        zapper = function(id, directions, zapDirections) return zapperFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, zapDirections) end,
       },
       combined = {
-        wire = function(inputDirections, triggerDirections) return signalPasserFactory(objectFactory, inputDirections, triggerDirections) end,
-        delay = function(inputDirections, triggerDirections, delay) return signalDelayFactory(objectFactory, inputDirections, triggerDirections, delay) end,
+        wire = function(id, inputDirections, triggerDirections) return signalPasserFactory(objectFactory, id, inputDirections, triggerDirections) end,
+        delay = function(id, inputDirections, triggerDirections, delay) return signalDelayFactory(objectFactory, id, inputDirections, triggerDirections, delay) end,
       },
       entities = {
-        bot = function() return require("entity/bot")(objectFactory) end,
-        flag = function() return require("entity/flag")(objectFactory) end,
-        wall = function() return require("entity/wall")(objectFactory) end,
-        crate = function() return require("entity/crate")(objectFactory) end,
+        bot = function() return require("entity/bot")(objectFactory, id) end,
+        flag = function() return require("entity/flag")(objectFactory, id) end,
+        wall = function() return require("entity/wall")(objectFactory, id) end,
+        crate = function() return require("entity/crate")(objectFactory, id) end,
         door = function(id) return require("entity/door")(objectFactory, id) end,      
       }
         

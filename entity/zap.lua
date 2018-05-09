@@ -1,6 +1,6 @@
-return function(objectFactory, direction)
+return function(objectFactory, id, direction)
   
-  local zap = objectFactory()
+  local zap = objectFactory(id)
     :thatCanBeDrawn(function(self)
       love.graphics.setColor(0,1,1,1)
       love.graphics.print("ZAP!", 25, 25)

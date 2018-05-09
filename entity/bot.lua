@@ -1,6 +1,6 @@
-return function(objectFactory)
+return function(objectFactory, id)
   
-  local bot = objectFactory()
+  local bot = objectFactory(id)
     :thatIsSolid()
     :thatCanBeDrawn(function(self)
       if not self.dead then

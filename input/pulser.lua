@@ -1,5 +1,5 @@
-return function(objectFactory, cooldown, directions)
-  local block = objectFactory()
+return function(objectFactory, id, cooldown, directions)
+  local block = objectFactory(id)
     :thatIsSolid()
     :thatCanBePushed()
     :thatIsAnInput(directions)

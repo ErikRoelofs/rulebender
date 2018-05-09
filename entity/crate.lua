@@ -1,6 +1,6 @@
-return function(objectFactory)
+return function(objectFactory, id)
   
-  local wall = objectFactory()
+  local wall = objectFactory(id)
     :thatIsSolid()
     :thatCanBePushed()
     :thatCanBeDrawn(function(self)

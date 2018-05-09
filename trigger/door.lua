@@ -1,13 +1,13 @@
-return function(triggerblockFactory, objectFactory, dispatcher, identifier, directions)       
+return function(triggerblockFactory, objectFactory, dispatcher, id, targetId, directions)       
   local doorIsClosed = true 
-  return triggerblockFactory(objectFactory, dispatcher, 
+  return triggerblockFactory(objectFactory, id, dispatcher, 
     function(self) return function()
       if doorIsClosed then
         doorIsClosed = false
-        dispatcher:dispatch({name="door.open", targetId=identifier})
+        dispatcher:dispatch({name="door.open", targetId=targetId})
       else
         doorIsClosed = true
-        dispatcher:dispatch({name="door.close", targetId=identifier})
+        dispatcher:dispatch({name="door.close", targetId=targetId})
       end            
     end end,
     function()
