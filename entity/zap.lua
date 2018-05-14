@@ -9,7 +9,7 @@ return function(objectFactory, id, direction)
     :go()
   
   zap.dispatcher:listen("object.collision", function(event)
-    if event.existingObject == zap or event.newObject == zap then
+    if event.existingObject.id == zap.id or event.newObject.id == zap.id then
       local event = {
         name = "signal",
         object = zap,
@@ -27,7 +27,7 @@ return function(objectFactory, id, direction)
   end)
   
   zap.dispatcher:listen("room.objectMapEdgeCollision", function(event)
-    if event.object == zap then
+    if event.object.id == zap.id then
       local removeEvent = {
         name = "object.remove",
         object = zap

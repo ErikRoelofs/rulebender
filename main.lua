@@ -152,7 +152,9 @@ function love.keypressed(key)
     end
   end
   if key == 'r' then
+    replay = true
     dispatcher:startReplayMode()
+    eventLog = require("eventlog")(dispatcher)
     oldRoom = room
     room = loader(1)
   end

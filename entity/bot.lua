@@ -42,13 +42,13 @@ return function(objectFactory, id)
   end))
   
   table.insert( deregAll, bot.dispatcher:listen("object.moving", function(event)
-    if event.object == bot then
+    if event.object.id == bot.id then
       bot.moving = true
     end
   end))
   
   table.insert( deregAll, bot.dispatcher:listen("object.arrived", function(event)
-    if event.object == bot then
+    if event.object.id == bot.id then
       bot.moving = false
     end
   end))

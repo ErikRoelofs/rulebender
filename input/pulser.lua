@@ -16,7 +16,7 @@ return function(objectFactory, id, cooldown, directions)
   block.dispatcher:listen("time.passes", function(event)
     block.cooldown = block.cooldown - event.value
     if block.cooldown < 0 then
-      block.cooldown = block.maxCooldown
+      block.cooldown = block.cooldown + block.maxCooldown
       block:pulse()
     end
   end)

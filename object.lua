@@ -64,7 +64,7 @@ return function(dispatcher)
 
       if self.pushable then
         dispatcher:listen("object.pushed", function(event)
-          if event.object == self.object then
+          if event.object.id == self.object.id then
             local newEvent = {
               name = "move",
               direction = event.direction,

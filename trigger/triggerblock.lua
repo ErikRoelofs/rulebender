@@ -14,7 +14,7 @@ return function(objectFactory, id, dispatcher, effect, draweffect, directions)
   block.draweffect = draweffect
 
   dispatcher:listen("object.triggered", function(event)
-    if event.object == block and block.triggerDirections[inverseDirection(event.direction)] then
+    if event.object.id == block.id and block.triggerDirections[inverseDirection(event.direction)] then
       block.effect()
       block:activate(false, true)
     end

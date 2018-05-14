@@ -30,7 +30,7 @@ end
 
 dispatcher.dispatchDelayed = function(self, event, delay)
   if event.name == "time.passes" then
-    error("Time waits for nobody.")
+    error("Time waits for nobody. (You cannot delay a time.passes event, the delay system depends on exactly that event.)")
   end
   table.insert(self.queue, {delay = delay, event = event})
 end

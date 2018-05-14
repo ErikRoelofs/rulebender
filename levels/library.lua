@@ -38,10 +38,10 @@ return function(objectFactory, dispatcher)
         delay = function(id, inputDirections, triggerDirections, delay) return signalDelayFactory(objectFactory, id, inputDirections, triggerDirections, delay) end,
       },
       entities = {
-        bot = function() return require("entity/bot")(objectFactory, id) end,
-        flag = function() return require("entity/flag")(objectFactory, id) end,
-        wall = function() return require("entity/wall")(objectFactory, id) end,
-        crate = function() return require("entity/crate")(objectFactory, id) end,
+        bot = function(id) return require("entity/bot")(objectFactory, id) end,
+        flag = function(id) return require("entity/flag")(objectFactory, id) end,
+        wall = function(id) return require("entity/wall")(objectFactory, id) end,
+        crate = function(id) return require("entity/crate")(objectFactory, id) end,
         door = function(id) return require("entity/door")(objectFactory, id) end,      
       }
         

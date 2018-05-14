@@ -11,19 +11,19 @@ return function(objectFactory, id, delay, directions)
   
   block.delaying = 0
   block.dispatcher:listen("object.arrived", function(event)
-    if event.object == block then
+    if event.object.id == block.id then
       block.delaying = delay
     end
   end)
 
   dispatcher:listen("room.objectsNowAdjacent", function(event)
-    if event.objectA == block or event.objectB == block then
+    if event.objectA.id == block.id or event.objectB.id == block.id then
       block.delaying = delay
     end
   end)
   
   dispatcher:listen("room.objectsNoLongerAdjacent", function(event)
-    if event.objectA == block or event.objectB == block then
+    if event.objectA.id == block.id or event.objectB.id == block.id then
       block.delaying = delay
     end
   end)

@@ -38,12 +38,13 @@ dispatcher.listen = function(self, name, callback)
     dispatcher:deregister(name, callback)
   end
 end
+
 dispatcher._handleTimePassing = function(self, event)
   self.timer = self.timer + event.value
   for key, queued in ipairs(self.queue) do
     queued.delay = queued.delay - event.value
     if queued.delay <= 0 then
-      self:dispatch(queued.event)      
+      self:_doDispatch(queued.event)      
     end
   end
   

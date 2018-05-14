@@ -11,7 +11,7 @@ return function(objectFactory, id, inputDirections, triggerDirections)
     :go()
   
     dispatcher:listen("object.triggered", function(event)
-    if event.object == block and block.triggerDirections[inverseDirection(event.direction)] then
+    if event.object.id == block.id and block.triggerDirections[inverseDirection(event.direction)] then
       block:pulse(inverseDirection(event.direction))
       block:activate(false, true)
     end

@@ -61,7 +61,7 @@ return function(dispatcher)
     if not self:canAddObject(object) then return end
     table.insert(self.content, object)
     for _, existingObject in ipairs(self.content) do
-      if object ~= existingObject then
+      if object.id ~= existingObject.id then
         local event = {
           name = "object.collision",
           existingObject = existingObject,
@@ -75,8 +75,8 @@ return function(dispatcher)
   
   tile.addMovingObject = function(self, object, direction, speed, dashing)
     if tile:addObject(object) then
-      self.movingObjects[object] = {time = 1 / speed, maxTime = 1 / speed, direction = direction, speed = speed}
-      if dashing then self.dashingObjects[object] = true end
+      self.movingObjects[object.id] = {time = 1 / speed, maxTime = 1 / speed, direction = direction, speed = speed, object = object}
+      if dashing then self.dashingObjects[object.id] = true end
       local event = {
         name = "object.moving",
         object = object,
@@ -89,7 +89,7 @@ return function(dispatcher)
 
   tile.removeObject = function(self, object)
     for key, obj in ipairs(self.content) do
-      if obj == object then
+      if obj.id == object.id then
         table.remove(self.content, key)
         return
       end
@@ -100,8 +100,8 @@ return function(dispatcher)
   tile.draw = function(self)
     for _, obj in ipairs(self.content) do
       love.graphics.push()
-      if self.movingObjects[obj] then
-        self.translateForMovement(self.movingObjects[obj].time, self.movingObjects[obj].maxTime, self.movingObjects[obj].direction)
+      if self.movingObjects[obj.id] then
+        self.translateForMovement(self.movingObjects[obj.id].time, self.movingObjects[obj.id].maxTime, self.movingObjects[obj.id].direction)
       end
       obj:draw()
       love.graphics.pop()
@@ -133,23 +133,23 @@ return function(dispatcher)
   
   tile.dispatcher:listen("time.passes", function(event)
     local remove = {}
-    for obj, vector in pairs(tile.movingObjects) do
+    for id, vector in pairs(tile.movingObjects) do
       vector.time = vector.time - math.min(vector.time, event.value)
       if vector.time == 0 then
-        table.insert(remove, obj)
+        remove[id] = vector.object
       end
     end
-    for _, obj in ipairs(remove) do
-      local direction = tile.movingObjects[obj].direction
-      local speed = tile.movingObjects[obj].speed
-      tile.movingObjects[obj] = nil
+    for id, obj in pairs(remove) do
+      local direction = tile.movingObjects[id].direction
+      local speed = tile.movingObjects[id].speed
+      tile.movingObjects[id] = nil
       local event = {
         name = "object.arrived",
-        object = obj        
+        object = obj
       }      
       tile.dispatcher:dispatch(event)
-      if tile.dashingObjects[obj] then
-        tile.dashingObjects[obj] = nil
+      if tile.dashingObjects[id] then
+        tile.dashingObjects[id] = nil
         local moveEvent = {
           name = "move",
           object = obj,
