@@ -51,7 +51,7 @@ dispatcher._handleTimePassing = function(self, event)
   local i = #self.queue
   while i > 0 do
     if self.queue[i].delay <= 0 then
-      table.remove(self.queue)
+      table.remove(self.queue, i)
     end
     i = i - 1
   end
@@ -77,6 +77,7 @@ dispatcher.receiveHistory = function(self, history)
   for _, data in ipairs(history) do
     table.insert(self.queue, { delay = data.time, event = data.event })
   end
+  print("done")
 end
 
 return dispatcher

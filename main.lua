@@ -113,7 +113,7 @@ function love.update(dt)
   if not paused then
     local event = {
       name = "time.passes",
-      value = dt
+      value = math.min(dt, 0.1)
     }
     dispatcher:dispatch(event)
   end
@@ -156,6 +156,7 @@ function love.keypressed(key)
     dispatcher:startReplayMode()
     eventLog = require("eventlog")(dispatcher)
     oldRoom = room
+    loader = require("levels/loader")(dispatcher, eventLog, library)
     room = loader(1)
   end
 end

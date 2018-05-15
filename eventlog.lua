@@ -2,7 +2,8 @@ return function(dispatcher)
     
   local eventLog = {
     dispatcher = dispatcher,
-    events = {}
+    events = {},
+    total = 0
   }
   
   eventLog.register = function(self)  
@@ -14,13 +15,19 @@ return function(dispatcher)
   end
 
   eventLog.draw = function(self)
-    for i, event in ipairs(self.events) do
-      love.graphics.print(event.name, 0, i * 15)
+    love.graphics.print(self.total .. " events", 0, 0 )
+    for i, entry in ipairs(self.events) do
+      love.graphics.print(entry.event.name .. " x " .. entry.times, 0, i * 15)
     end
   end
 
   eventLog.addEvent = function(self, event)
-    table.insert(self.events, event)
+    self.total = self.total + 1
+    if #self.events > 0 and self.events[#self.events].event.name == event.name then
+      self.events[#self.events].times = self.events[#self.events].times + 1
+    else      
+      table.insert(self.events, {event = event, times = 1})
+    end
     if #self.events > 25 then
       table.remove(self.events, 1)
     end

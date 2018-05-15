@@ -35,7 +35,7 @@ return function (dispatcher, width, height)
     if self.objects[object.id] then
       originalLocation = self:_findObjectLocation(object)
     end
-    self.objects[object.id] = {x = x, y = y}
+    self.objects[object.id] = {x = x, y = y, object = object}
     if direction then
       added = self.tiles[x][y]:addMovingObject(object, direction, speed, dashing)
     else
@@ -63,7 +63,7 @@ return function (dispatcher, width, height)
   
   dispatcher:listen("move", function(event)
     if room.objects[event.object.id] then
-      room:moveObject(event.object, event.direction, event.speed, event.dashing)
+      room:moveObject(room.objects[event.object.id].object, event.direction, event.speed, event.dashing)
     end
   end)
  
@@ -82,7 +82,7 @@ return function (dispatcher, width, height)
     
   dispatcher:listen("signal", function(event)
     if room.objects[event.object.id] then
-      room:applySignal(event.object, event.direction, event.impactSignal)
+      room:applySignal(room.objects[event.object.id].object, event.direction, event.impactSignal)
     end
   end)
 
@@ -118,8 +118,6 @@ return function (dispatcher, width, height)
     if room.objects[event.object.id] then      
       local x, y = room:_findObjectLocation(event.object)
       room:removeObject(event.object)
-    else
-      local a = "wat"
     end
   end)
 
