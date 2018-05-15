@@ -76,6 +76,7 @@ end
 
 dispatcher.flush = function(self)
   self.listeners = {}
+  self.queue = {}
 end
 
 dispatcher.getHistory = function(self)

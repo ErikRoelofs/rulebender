@@ -68,6 +68,9 @@ CONST = {
 
 paused = false
 
+local gametime = 0
+local history = {}
+
 inverseDirection = function(direction)
   if direction == "left" then return "right" end
   if direction == "right" then return "left" end
@@ -86,7 +89,7 @@ end
 
 function love.load()
   
-  dispatcher = require("dispatch/facade")
+  dispatcher = require("dispatch/dispatcher")
   objectFactory = require("object")(dispatcher)
   eventLog = require("eventlog")(dispatcher)
   library = require("levels/library")(objectFactory, dispatcher)
@@ -111,6 +114,7 @@ end
 
 function love.update(dt)
   if not paused then
+    gametime = gametime + dt
     local event = {
       name = "time.passes",
       value = math.min(dt, 0.1)
@@ -129,12 +133,13 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  if not paused then
+  if not paused and not replay then
     local event = {
         name = "keypressed",
         key = key
     }
     dispatcher:dispatch(event)
+    table.insert(history, {time = gametime, event = event})
   end
   if key == 'space' then
     if paused then
@@ -151,12 +156,14 @@ function love.keypressed(key)
       paused = true
     end
   end
-  if key == 'r' then
+  if key == 'r' and not replay then
     replay = true
-    dispatcher:startReplayMode()
-    eventLog = require("eventlog")(dispatcher)
     oldRoom = room
     loader = require("levels/loader")(dispatcher, eventLog, library)
     room = loader(1)
+    for _, entry in ipairs(history) do
+      dispatcher:dispatchDelayed(entry.event, entry.time)
+    end
   end
+
 end
