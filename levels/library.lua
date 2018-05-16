@@ -29,10 +29,10 @@ return function(objectFactory, dispatcher)
       },
       trigger = {
         move = {
-          left = function(id, directions) return directionblocksFactory.left(id, directions) end,
-          right = function(id, directions) return directionblocksFactory.right(id, directions) end,
-          down = function(id, directions) return directionblocksFactory.down(id, directions) end,
-          up = function(id, directions) return directionblocksFactory.up(id, directions) end,
+          left = function(id, botId, directions) return directionblocksFactory.left(id, botId, directions) end,
+          right = function(id, botId, directions) return directionblocksFactory.right(id, botId, directions) end,
+          down = function(id, botId, directions) return directionblocksFactory.down(id, botId, directions) end,
+          up = function(id, botId, directions) return directionblocksFactory.up(id, botId, directions) end,
         },
         door = function(id, targetId, directions) return doorFactory(triggerblockFactory, objectFactory, dispatcher, id, targetId, directions) end,
         death = function(id, directions) return triggerblockFactory(objectFactory, id, dispatcher, function(self) return function(event) dispatcher:dispatch({name="bot.death"}) end end, function(self) love.graphics.print("DEATH", 4, 20) end, directions) end,

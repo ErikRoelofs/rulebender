@@ -1,9 +1,10 @@
 return function(objectFactory, dispatcher, triggerblockFactory)
   
-  function makeDirectionBlock(id, eventName, text, directions)
+  function makeDirectionBlock(id, botId, eventName, text, directions)
     return triggerblockFactory(objectFactory, id, dispatcher, function(self) return function()
       local event = {
-        name = eventName
+        name = eventName,
+        botId = botId, 
       }
       dispatcher:dispatch(event)
     end end, function() 
@@ -13,9 +14,9 @@ return function(objectFactory, dispatcher, triggerblockFactory)
   end
 
   return {
-    left = function(id, directions) return makeDirectionBlock(id, "bot.left", "go left", directions) end,
-    right = function(id, directions) return makeDirectionBlock(id, "bot.right", "go right", directions) end,
-    up = function(id, directions) return makeDirectionBlock(id, "bot.up", "go up", directions) end,
-    down = function(id, directions) return makeDirectionBlock(id, "bot.down", "go down", directions) end
+    left = function(id, botId, directions) return makeDirectionBlock(id, botId, "bot.left", "go left", directions) end,
+    right = function(id, botId, directions) return makeDirectionBlock(id, botId, "bot.right", "go right", directions) end,
+    up = function(id, botId, directions) return makeDirectionBlock(id, botId, "bot.up", "go up", directions) end,
+    down = function(id, botId, directions) return makeDirectionBlock(id, botId, "bot.down", "go down", directions) end
   }
 end

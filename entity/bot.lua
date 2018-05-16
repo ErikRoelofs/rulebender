@@ -22,7 +22,8 @@ return function(objectFactory, id)
       direction = direction,
       speed = 2
     }
-    return function()
+    return function(triggerEvent)
+      if triggerEvent.botId ~= bot.id then return end
       if bot.moving then return end
       bot.dispatcher:dispatch(event)
     end
