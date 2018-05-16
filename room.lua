@@ -1,5 +1,4 @@
-return function (dispatcher, width, height) 
-  
+return function (dispatcher, width, height, which) 
   local tileFactory = require("tile")
   
   local room = {
@@ -9,7 +8,8 @@ return function (dispatcher, width, height)
     objects = {},
     dispatcher = dispatcher,
     activated = {},
-    directions = CONST.DIRECTIONS()
+    directions = CONST.DIRECTIONS(),
+    which = which
   }
   
   local i, j = 0, 0
@@ -205,6 +205,7 @@ return function (dispatcher, width, height)
   end
   
   room.draw = function(self)
+    love.graphics.print(self.which, 300, 750)
     local i, j = 0, 0
     while i < self.width do
       j = 0

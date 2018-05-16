@@ -3,8 +3,6 @@ return function(objectFactory, id)
   local bot = objectFactory(id)
     :thatIsSolid()
     :thatCanBeDrawn(function(self)
-      print("draw")
-      print(self)
       if not self.dead then
         love.graphics.print("bot!", 0, 20)
         if self.moving then
@@ -45,8 +43,6 @@ return function(objectFactory, id)
   
   table.insert( deregAll, bot.dispatcher:listen("object.moving", function(event)
     if event.object.id == bot.id then
-      print("move")
-      print(bot)
       bot.moving = true
     end
   end))

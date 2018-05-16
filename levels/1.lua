@@ -1,6 +1,6 @@
 return function(dispatcher, library)
   
-  local room = require("room")(dispatcher, 4,12)
+  local room = require("room")(dispatcher, 4,12, math.random(1,100))
 
   local curId = 1
   id = function()

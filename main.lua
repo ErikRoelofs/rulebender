@@ -156,13 +156,22 @@ function love.keypressed(key)
       paused = true
     end
   end
-  if key == 'r' and not replay then
-    replay = true
-    oldRoom = room
-    loader = require("levels/loader")(dispatcher, eventLog, library)
-    room = loader(1)
-    for _, entry in ipairs(history) do
-      dispatcher:dispatchDelayed(entry.event, entry.time)
+  if key == 'r' then
+    if not replay then
+      replay = true
+      oldRoom = room
+      oldDispatcher = dispatcher
+      dispatcher = require("dispatch/dispatcher")
+      loader = require("levels/loader")(dispatcher, eventLog, library)
+      room = loader(1)
+      for _, entry in ipairs(history) do
+        dispatcher:dispatchDelayed(entry.event, entry.time)
+      end
+    else
+      replay = false
+      room = oldRoom      
+      dispatcher = oldDispatcher
+      
     end
   end
 
