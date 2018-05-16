@@ -35,6 +35,7 @@ return function(dispatcher)
   
   eventLog.flush = function(self, event)
     self.events = {}
+    self.total = 0
   end
 
   return eventLog

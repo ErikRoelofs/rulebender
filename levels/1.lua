@@ -1,5 +1,4 @@
 return function(dispatcher, library)
-  
   local room = require("room")(dispatcher, 4,12, math.random(1,100))
 
   local curId = 1
@@ -7,6 +6,7 @@ return function(dispatcher, library)
     curId = curId + 1
     return curId
   end
+
 
   room:placeObject(3, 3, library.input.key(id(), "a", { up = true, left = true }))
   --room:placeObject(3, 3, library.input.pulser(1.0))
@@ -36,6 +36,14 @@ return function(dispatcher, library)
 
   room:placeObject(1, 5, library.entities.flag(id()))
 
+  
+  --[[
+  room:placeObject(3, 4, library.input.key(id(), "w"))
+  room:placeObject(2, 4, library.trigger.move.up(id()))
+
+  room:placeObject(1, 11, library.entities.bot(id()))
+  room:placeObject(1, 2, library.entities.flag(id()))
+]]
   dispatcher:listen("room.objectsCollided", function(event)
     if event.objectA:hasType("bot") and event.objectB:hasType("flag")
     or event.objectB:hasType("bot") and event.objectA:hasType("flag") then
@@ -43,6 +51,6 @@ return function(dispatcher, library)
     end
       
   end)
-
+  
   return room
 end

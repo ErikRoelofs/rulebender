@@ -89,7 +89,7 @@ end
 
 function love.load()
   
-  dispatcher = require("dispatch/dispatcher")
+  dispatcher = require("dispatch/dispatcher")()
   objectFactory = require("object")(dispatcher)
   eventLog = require("eventlog")(dispatcher)
   library = require("levels/library")(objectFactory, dispatcher)
@@ -114,7 +114,9 @@ end
 
 function love.update(dt)
   if not paused then
-    gametime = gametime + dt
+    if not replay then
+      gametime = gametime + dt
+    end
     local event = {
       name = "time.passes",
       value = math.min(dt, 0.1)
@@ -124,6 +126,11 @@ function love.update(dt)
 end
 
 function love.draw()
+  local replayText = "normal play"
+  if replay then 
+    replayText = "replaying"
+  end
+  love.graphics.print(replayText, 900, 500)
   room:draw()
   
   love.graphics.push()
@@ -134,12 +141,14 @@ end
 
 function love.keypressed(key)
   if not paused and not replay then
-    local event = {
-        name = "keypressed",
-        key = key
-    }
-    dispatcher:dispatch(event)
-    table.insert(history, {time = gametime, event = event})
+    if key ~= "r" and key ~= "space" then
+      local event = { 
+          name = "keypressed",
+          key = key
+      }
+      dispatcher:dispatch(event)
+      table.insert(history, {time = gametime, event = event})
+    end
   end
   if key == 'space' then
     if paused then
@@ -161,7 +170,14 @@ function love.keypressed(key)
       replay = true
       oldRoom = room
       oldDispatcher = dispatcher
-      dispatcher = require("dispatch/dispatcher")
+      oldEventlog = eventLog
+      oldLibrary = library
+      oldObjectFactory = objectFactory
+
+      dispatcher = require("dispatch/dispatcher")()
+      eventLog = require("eventlog")(dispatcher)
+      objectFactory = require("object")(dispatcher)
+      library = require("levels/library")(objectFactory, dispatcher)
       loader = require("levels/loader")(dispatcher, eventLog, library)
       room = loader(1)
       for _, entry in ipairs(history) do
@@ -169,9 +185,12 @@ function love.keypressed(key)
       end
     else
       replay = false
-      room = oldRoom      
+      room = oldRoom
+      eventLog = oldEventlog
+      library = oldLibrary
+      objectFactory = oldObjectFactory
+      dispatcher:flush()
       dispatcher = oldDispatcher
-      
     end
   end
 
