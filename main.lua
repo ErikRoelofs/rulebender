@@ -47,7 +47,7 @@ if debug then require("mobdebug").start() end
   non-solid:
     - belt
     - rotator
-    - up-signal
+    v up-signal
     
   combined:
     - counters
