@@ -4,6 +4,7 @@ return function(objectFactory, dispatcher)
   local motionFactory = require("input/motion")
   local collisionblockFactory = require("input/collisionblock")
   local remoteInputFactory = require("input/remote")
+  local plateFactory = require("input/signalPlate")
   
   local triggerblockFactory = require("trigger/triggerblock")
   local directionblocksFactory = require("trigger/directionblocks") (objectFactory, dispatcher, triggerblockFactory)
@@ -24,6 +25,7 @@ return function(objectFactory, dispatcher)
         pulser = function(id, timer, directions) return pulserFactory(objectFactory, id, timer, directions) end,
         motion = function(id, timer, directions) return motionFactory(objectFactory, id, timer, directions) end,
         remote = function(id, directions) return remoteInputFactory(objectFactory, id, directions) end,
+        plate = function(id) return plateFactory(objectFactory, id) end,
       },
       trigger = {
         move = {

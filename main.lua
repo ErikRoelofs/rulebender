@@ -23,7 +23,7 @@ if debug then require("mobdebug").start() end
     v key
     / collision
     v time
-    - fromTrigger? (remote signal activation)
+    v fromTrigger? (remote signal activation)
     v motion
     - specific object motion
     - destruction
