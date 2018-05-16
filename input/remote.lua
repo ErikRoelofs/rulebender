@@ -1,16 +1,15 @@
-return function(objectFactory, id, key, directions)
+return function(objectFactory, id, directions)
   local block = objectFactory(id)
     :thatIsSolid()
     :thatCanBePushed()
     :thatIsAnInput(directions)    
     :thatCanBeDrawn(function(self) 
-      love.graphics.print("key: " .. self.key, 5, 20)     
+      love.graphics.print("remote: " .. self.id, 5, 20) 
     end)
     :go()
   
-  block.key = key
-  block.dispatcher:listen("keypressed", function(event)
-    if event.key == block.key then
+  block.dispatcher:listen("remote.trigger", function(event)
+    if event.id == block.id then
       block:pulse()    
     end
   end)

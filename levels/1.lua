@@ -24,17 +24,21 @@ return function(dispatcher, library)
   room:placeObject(1, 1, library.trigger.move.right(id()))
 
   room:placeObject(2, 4, library.input.key(id(), "w"))
-  room:placeObject(1, 4, library.trigger.move.up(id()))
+--  room:placeObject(1, 4, library.trigger.move.up(id()))
 
   room:placeObject(0, 0, library.input.key(id(), "s"))
-  room:placeObject(1, 0, library.trigger.death(id(), {up = true, down = true}))
+  room:placeObject(2, 0, library.trigger.death(id(), {up = true, down = true, right=true}))
   room:placeObject(0, 1, library.trigger.move.down(id()))
 
   room:placeObject(3, 11, library.entities.bot(id()))
   room:placeObject(0, 6, library.entities.wall(id()))
   room:placeObject(0, 7, library.entities.door("someId"))
 
-  room:placeObject(1, 5, library.trigger.flag(id()))
+--  room:placeObject(1, 5, library.trigger.flag(id()))
+  
+  local remoteInput = id()
+  room:placeObject(3, 0, library.input.remote(remoteInput))
+  room:placeObject(1, 4, library.trigger.remote(id(), remoteInput))
 
   return room
 end

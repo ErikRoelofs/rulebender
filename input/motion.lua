@@ -5,7 +5,6 @@ return function(objectFactory, id, delay, directions)
     :thatIsAnInput(directions)
     :thatCanBeDrawn(function(self) 
       love.graphics.print("motion sensor", 5, 20) 
-      self:drawActiveMark()
     end)
     :go()
   

@@ -3,14 +3,18 @@ return function(objectFactory, dispatcher)
   local pulserFactory = require("input/pulser")
   local motionFactory = require("input/motion")
   local collisionblockFactory = require("input/collisionblock")
+  local remoteInputFactory = require("input/remote")
+  
   local triggerblockFactory = require("trigger/triggerblock")
   local directionblocksFactory = require("trigger/directionblocks") (objectFactory, dispatcher, triggerblockFactory)
   local doorFactory = require("trigger/door")
   local pusherblockFactory = require("trigger/pusherblock")
   local launcherFactory = require("trigger/launcher")
   local zapperFactory = require("trigger/zapper")
+  
   local signalPasserFactory = require("combined/signalPasser")
   local signalDelayFactory = require("combined/signalDelay")
+  
   
   return {
     -- bots, inputs, triggers, walls, doors, etc (factory functions only)
@@ -19,6 +23,7 @@ return function(objectFactory, dispatcher)
         collision = function(id, objectType, directions) return collisionblockFactory(objectFactory, id, objectType, directions) end,
         pulser = function(id, timer, directions) return pulserFactory(objectFactory, id, timer, directions) end,
         motion = function(id, timer, directions) return motionFactory(objectFactory, id, timer, directions) end,
+        remote = function(id, directions) return remoteInputFactory(objectFactory, id, directions) end,
       },
       trigger = {
         move = {
@@ -33,6 +38,7 @@ return function(objectFactory, dispatcher)
         launcher = function(id, directions, launchDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, launchDirections) end,
         zapper = function(id, directions, zapDirections) return zapperFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, zapDirections) end,
         flag = function(id) return require("trigger/flag")(triggerblockFactory, dispatcher, objectFactory, id) end,
+        remote = function(id, triggerId) return require("trigger/remote")(triggerblockFactory, dispatcher, objectFactory, id, triggerId) end,
       },
       combined = {
         wire = function(id, inputDirections, triggerDirections) return signalPasserFactory(objectFactory, id, inputDirections, triggerDirections) end,
