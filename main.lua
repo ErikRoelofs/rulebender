@@ -23,9 +23,11 @@ if debug then require("mobdebug").start() end
     v key
     / collision
     v time
-    - fromTrigger?
+    - fromTrigger? (remote signal activation)
     v motion
+    - specific object motion
     - destruction
+    v ranged zap
     
   triggers:
     - object movement
@@ -39,6 +41,13 @@ if debug then require("mobdebug").start() end
     - rotate
     - manipulate state
     v zapper
+    - pusher-launcher
+    - puller
+    
+  non-solid:
+    - belt
+    - rotator
+    - up-signal
     
   combined:
     - counters

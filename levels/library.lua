@@ -32,6 +32,7 @@ return function(objectFactory, dispatcher)
         pusher = function(directions, id, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, pushDirections) end,
         launcher = function(id, directions, launchDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, launchDirections) end,
         zapper = function(id, directions, zapDirections) return zapperFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, zapDirections) end,
+        flag = function(id) return require("trigger/flag")(triggerblockFactory, dispatcher, objectFactory, id) end,
       },
       combined = {
         wire = function(id, inputDirections, triggerDirections) return signalPasserFactory(objectFactory, id, inputDirections, triggerDirections) end,
@@ -39,7 +40,6 @@ return function(objectFactory, dispatcher)
       },
       entities = {
         bot = function(id) return require("entity/bot")(objectFactory, id) end,
-        flag = function(id) return require("entity/flag")(objectFactory, id) end,
         wall = function(id) return require("entity/wall")(objectFactory, id) end,
         crate = function(id) return require("entity/crate")(objectFactory, id) end,
         door = function(id) return require("entity/door")(objectFactory, id) end,      
