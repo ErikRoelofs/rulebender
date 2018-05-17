@@ -1,4 +1,4 @@
-return function(triggerblockFactory, objectFactory, id, dispatcher, triggerDirections, launchDirections)
+return function(triggerblockFactory, objectFactory, id, dispatcher, triggerDirections, launchDirections, launchEntity)
   local spawnId = id * 50000
   local nextId = function()
     spawnId = spawnId + 1
@@ -11,7 +11,7 @@ return function(triggerblockFactory, objectFactory, id, dispatcher, triggerDirec
         local event = {
           name = "create.adjacent.moving",
           existingObject = self,
-          newObject = require("entity/crate")(objectFactory, nextId()),
+          newObject = require(launchEntity)(objectFactory, nextId()),
           direction = direction,
           speed = 1,
           dashing = true
