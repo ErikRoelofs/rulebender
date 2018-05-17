@@ -42,18 +42,18 @@ if debug then require("mobdebug").start() end
     - manipulate state
     v zapper
     v pusher-launcher
-    - puller
+    v puller
     
-  non-solid:
-    - belt
-    - rotator
+  non-solid: (? this goes against the core idea ?)
+    ? belt
+    ? rotator
     v up-signal
     
   combined:
     - counters
     v delays
     v signal pass-through
-    - signal teleport
+    v signal teleport
 
 ]]
 
@@ -80,6 +80,7 @@ paused = false
 
 local gametime = 0
 local history = {}
+local currentLevel = 1
 
 inverseDirection = function(direction)
   if direction == "left" then return "right" end
@@ -105,7 +106,7 @@ function love.load()
   library = require("levels/library")(objectFactory, dispatcher)
     
   loader = require("levels/loader")(dispatcher, eventLog, library)
-  room = loader(1)
+  room = loader(currentLevel)
   
   dispatcher:listen("level.completed", function(event)
     wait = 0.2
@@ -189,7 +190,7 @@ function love.keypressed(key)
       objectFactory = require("object")(dispatcher)
       library = require("levels/library")(objectFactory, dispatcher)
       loader = require("levels/loader")(dispatcher, eventLog, library)
-      room = loader(1)
+      room = loader(currentLevel)
       for _, entry in ipairs(history) do
         dispatcher:dispatchDelayed(entry.event, entry.time)
       end

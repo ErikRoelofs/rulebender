@@ -205,7 +205,6 @@ return function (dispatcher, width, height, which)
   end
   
   room.draw = function(self)
-    love.graphics.print(self.which, 300, 750)
     local i, j = 0, 0
     while i < self.width do
       j = 0
