@@ -41,7 +41,7 @@ if debug then require("mobdebug").start() end
     - rotate
     - manipulate state
     v zapper
-    - pusher-launcher
+    v pusher-launcher
     - puller
     
   non-solid:
