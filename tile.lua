@@ -45,7 +45,7 @@ return function(dispatcher)
         object = existingObject,
         direction = direction
       }
-      self.dispatcher:dispatch(event)
+      self.dispatcher:dispatchDelayed(event, 0)      
     end
   end
 
@@ -106,7 +106,6 @@ return function(dispatcher)
       obj:draw()
       love.graphics.pop()
     end
-    love.graphics.print( #self.content, 5, 5 )
   end
   
   tile.translateForMovement = function(time, maxTime, direction)

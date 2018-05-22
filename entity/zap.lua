@@ -1,4 +1,4 @@
-return function(objectFactory, id, direction)
+return function(objectFactory, id, direction, speed)
   
   local zap = objectFactory(id)
     :thatCanBeDrawn(function(self)
@@ -16,13 +16,13 @@ return function(objectFactory, id, direction)
         direction = direction,
         impactSignal = true
       }
-      zap.dispatcher:dispatchDelayed(event, 0.5)
+      zap.dispatcher:dispatchDelayed(event, 0.5 / speed)
       
       local removeEvent = {
         name = "object.remove",
         object = zap
       }
-      zap.dispatcher:dispatchDelayed(removeEvent, 0.5)
+      zap.dispatcher:dispatchDelayed(removeEvent, 0.5 / speed)
     end
   end)
   

@@ -60,7 +60,7 @@ if debug then require("mobdebug").start() end
 --[[
     refactor: object factory should be built from parts
     refactor: events or other objects for motion, instead of arg passing
-    bugfix: interactions between moving objects (specifically zaps and such fired in close succession)
+    bugfix: resolve all signals before moving objects (? delay 0 is a hack ?)
 ]]
 
 --[[ game parts needed

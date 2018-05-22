@@ -23,6 +23,7 @@ return function(triggerblockFactory, objectFactory, id, dispatcher, triggerDirec
     function()
       love.graphics.print("launcher", 4, 20)
     end, 
-    triggerDirections
+    triggerDirections,
+    1 / launchSpeed + 0.1
   )
 end
