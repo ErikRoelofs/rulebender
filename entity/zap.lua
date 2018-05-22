@@ -9,7 +9,7 @@ return function(objectFactory, id, direction, speed)
     :go()
   
   zap.dispatcher:listen("object.collision", function(event)
-    if event.existingObject.id == zap.id or event.newObject.id == zap.id then
+    if (event.existingObject.id == zap.id and event.newObject.types.solid) or (event.newObject.id == zap.id and event.existingObject.types.solid) then
       local event = {
         name = "signal",
         object = zap,
