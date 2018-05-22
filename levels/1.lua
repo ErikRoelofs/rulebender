@@ -11,8 +11,8 @@ return function(dispatcher, library)
   room:placeObject(1, 0, library.input.key(id(), "s"))
 
   room:placeObject(0, 3, library.trigger.pusher(id(), nil, { right = true }))
-  room:placeObject(1, 3, library.combined.wire(id()))
-  room:placeObject(2, 3, library.combined.wire(id()))
+  room:placeObject(1, 3, library.combined.wire(id(), {left = true, right = true},{left = true, right = true}))
+  room:placeObject(2, 3, library.combined.wire(id(), {left = true, right = true},{left = true, right = true}))
   room:placeObject(3, 3, library.input.key(id(), "a", { down = true }))
 
   local doorId = id()
