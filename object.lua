@@ -74,6 +74,19 @@ return function(dispatcher)
             dispatcher:dispatch(newEvent)
           end
         end)
+      
+        dispatcher:listen("object.moving", function(event)
+          if event.object.id == self.object.id then
+            self.object.moving = true
+          end
+        end)
+        
+        dispatcher:listen("object.arrived", function(event)
+          if event.object.id == self.object.id then
+            self.object.moving = false
+          end
+        end)
+
       end
       
       if self.isInput or self.isTrigger then
@@ -159,6 +172,7 @@ return function(dispatcher)
         end
         
         self.object.delayedPulse = function(self, delay, omitDirection)
+          if self.moving then return end
           self.activationTime = delay
           local dereg 
           dereg = self.dispatcher:listen("time.passes", function(event)
@@ -171,6 +185,7 @@ return function(dispatcher)
         end
         
         self.object.pulse = function(self, omitDirection)
+          if self.moving then return end
           for direction in pairs(self.inputDirections) do
             if direction ~= omitDirection then
               newEvent = {

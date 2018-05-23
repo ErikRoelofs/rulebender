@@ -28,6 +28,7 @@ return function(objectFactory, id, inputDirections, triggerDirections)
   
     dispatcher:listen("object.triggered", function(event)
     if event.object.id == block.id and block.triggerDirections[inverseDirection(event.direction)] then
+      if block.moving then return end
       block:pulse(inverseDirection(event.direction))
       block:activate(false, true)
     end

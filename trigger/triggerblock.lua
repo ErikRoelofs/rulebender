@@ -18,14 +18,19 @@ return function(objectFactory, id, dispatcher, effect, draweffect, directions, c
     end)
     :go()
 
-  block.effect = effect(block)
+  block.realEffect = effect(block)
+  block.effect = function(block) 
+    if block.moving then return end
+    block.realEffect()
+  end
+  
   block.draweffect = draweffect
   block.maxCooldown = cooldown or 0
   block.cooldown = 0
 
   dispatcher:listen("object.triggered", function(event)
     if block.cooldown <= 0 and event.object.id == block.id and (not event.direction or block.triggerDirections[inverseDirection(event.direction)]) then
-      block.effect()
+      block.effect(block)
       block:activate(false, true)
       block.cooldown = block.maxCooldown
     end

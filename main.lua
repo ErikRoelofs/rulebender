@@ -61,7 +61,7 @@ if debug then require("mobdebug").start() end
     refactor: object factory should be built from parts
     refactor: events or other objects for motion, instead of arg passing
     bugfix: resolve all signals before moving objects (? delay 0 is a hack ?)
-    refactor: rethink object movement; this is super unclear.
+    refactor: rethink object movement; this is super unclear. (objects decide when to move to the new tile?)
 ]]
 
 --[[ game parts needed
