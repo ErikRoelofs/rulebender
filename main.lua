@@ -36,13 +36,34 @@ if debug then require("mobdebug").start() end
     - open/close
     v win
     - on/off
-    - shoot/attack
+    - shoot/attack ?
     - grab/drop
     - rotate
-    - manipulate state
+    - manipulate state ?
+    - teleport    
     v zapper
     v pusher-launcher
     v puller
+  
+  bots:
+    v basic movement & pushing
+      - should this be "forward" + "rotate" instead ?
+      - bot rotation
+    - bots with parts
+      - pusher (?)
+      - lifter
+      - destroyer
+      - zapper
+      - spawner
+      - launcher
+      (or just attach any trigger?)
+      - part replacement?
+    
+  objects with batteries?
+    - swapping batteries? (on moving into tile?)
+    - recharging batteries?
+    
+  creatures: (? predictable AI controlled objects with behavior ?)
     
   non-solid: (? this goes against the core idea ?)
     ? belt
