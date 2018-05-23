@@ -38,7 +38,7 @@ return function(objectFactory, dispatcher)
         pusher = function(id, directions, pushDirections) return pusherblockFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, pushDirections) end,
         crateLauncher = function(id, directions, launchDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, launchDirections, "entity/crate") end,
         zapper = function(id, directions, zapDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, zapDirections, "entity/zap") end,
-        blammer = function(id, directions, blamDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, blamDirections, "entity/blam") end,
+        blammer = function(id, directions, blamDirections, speed) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, blamDirections, "entity/blam", speed or 2) end,
         puller = function(id, directions, pullDirections) return launcherFactory(triggerblockFactory, objectFactory, id, dispatcher, directions, pullDirections, "entity/pull", 6) end,
         flag = function(id) return require("trigger/flag")(triggerblockFactory, dispatcher, objectFactory, id) end,
         remote = function(id, triggerId) return require("trigger/remote")(triggerblockFactory, dispatcher, objectFactory, id, triggerId) end,

@@ -7,7 +7,7 @@ return function(dispatcher, library)
     return curId
   end
 
-  room:placeObject(0, 0, library.trigger.zapper(id(), nil, { down = true }))
+  room:placeObject(0, 0, library.trigger.zapper(id(), nil, { down = true }, 2))
   room:placeObject(1, 0, library.input.key(id(), "s"))
 
   room:placeObject(0, 3, library.trigger.pusher(id(), nil, { right = true }))
